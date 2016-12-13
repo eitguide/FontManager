@@ -217,7 +217,7 @@ namespace FontManager
 
         public void DeleteFile(String filePath)
         {
-            if (!String.IsNullOrEmpty(filePath))
+            if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath))
             {
                 File.Delete(filePath);
             }

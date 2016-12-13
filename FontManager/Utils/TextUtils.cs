@@ -16,7 +16,7 @@ namespace FontManager.Utils
 
             String subString = str.Remove(0, Config.LanguagePrefix.Length).Replace('_', ' ').ToLower();
             return Regex.Replace(subString, @"\b(\w)", m => m.Value.ToUpper());
-
+    
         }
     }
 }

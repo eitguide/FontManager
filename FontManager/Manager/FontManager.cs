@@ -15,7 +15,6 @@ namespace FontManager.Manager
     {
         private static FontManager mInstance;
         private FileManager mFileInstance = FileManager.GetInstance();
-        private static string FontsOSFolderInstaled = null;
         private static string CurentFontsFolder = Environment.CurrentDirectory;
         private FontFormatCollection fontCollection = new FontFormatCollection();
 
@@ -63,7 +62,7 @@ namespace FontManager.Manager
 
         public void DisableFont(String filePath)
         {
-
+            FontInstallation.RemoveFontResource(filePath);
         }
 
         public void AddFontFormat(FontType type)

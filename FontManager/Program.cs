@@ -1,4 +1,5 @@
-﻿using FontMananger.UI;
+﻿using FontManager.UI;
+using FontMananger.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,32 +19,7 @@ namespace FontManager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            String fontFile = @Environment.CurrentDirectory + "\\Cabin-Bold.ttf";
-            String name = Path.GetFileName(fontFile);
-            String destination = Directory.GetParent(Environment.CurrentDirectory).FullName;
-
-
-            //FileManager manager = FileManager.GetInstance();
-
-            //  manager.CopyFileTo(fontFile, manager.GetFontsSystemFolder());
-
-            //String path = Path.Combine(manager.GetCurrentFolderWorking(), Path.GetFileName(fontFile));
-            //FontManager.Manager.FontManager.GetInstance().
-            //     ActiveFont(path);
-
-            //List<FileInfo> infos = (List<FileInfo>)manager.GetListFiles(manager.GetFontsSystemFolder());
-            //for (int i = 0; i < infos.Count; i++)
-            //{
-            //    Console.WriteLine(infos[i].Name);
-            //}
-
-
-
-            
-          
-
-            Application.Run(new frmMain());
+            Application.Run(new TestActiveFont());
 
         }
     }
