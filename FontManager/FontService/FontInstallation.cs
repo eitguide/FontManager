@@ -29,24 +29,22 @@ namespace FontManager.FontService
             fileManager = FileManager.GetInstance();
         }
 
-        public string[] GetListFontNameInstalled()
+        public List<string> GetListFontNameInstalled()
         {
-            return registryKey.GetValueNames();
+            return registryKey.GetValueNames().ToList();
         }
 
         public List<FontInfo> GetListFontInfoInstalled()
         {
-            String[] fontNames = GetListFontNameInstalled();
-            Logger.d("######" + fontNames.Length.ToString());
-            
-            if (fontNames == null || fontNames.Length == 0)
+            List<string> fontNames = GetListFontNameInstalled();
+
+            if (fontNames == null || fontNames.Count == 0)
                 return null;
 
 
-           
 
-            List <FontInfo> infos = new List<FontInfo>();
-            int count = fontNames.Length;
+            List<FontInfo> infos = new List<FontInfo>();
+            int count = fontNames.Count;
             for (int i = 0; i < count; i++)
             {
                 object name = this.registryKey.GetValue(fontNames[i]);
@@ -61,6 +59,59 @@ namespace FontManager.FontService
             }
 
             return infos;
+        }
+
+        private bool CheckSupportFormat(string filename, FontFormatCollection formatCollectioin)
+        {
+            string extension = Path.GetExtension(filename);
+            //if(extension == ".fon")
+            //{
+            //    Console.WriteLine(filename);
+            //}
+
+            //if(filename == "COURE.FON")
+            //{
+            //    int debug = 9;
+            //}
+            return formatCollectioin.ContainsExt(extension);
+        }
+
+        public List<FontInfo> GetListFontInfoInstalled(FontFormatCollection formatCollection)
+        {
+
+            List<String> fontNames = GetListFontNameInstalled();
+         
+
+            if (fontNames == null || fontNames.Count == 0)
+                return null;
+
+          
+            for (int i = 0; i < fontNames.Count; i++)
+            {
+                string item = (string)this.registryKey.GetValue(fontNames[i]);
+                if (!CheckSupportFormat(item, formatCollection))
+                {
+                    fontNames.Remove(fontNames[i]);
+                }
+            }
+
+            List<FontInfo> infos = new List<FontInfo>();
+            int count = fontNames.Count;
+            for (int i = 0; i < count; i++)
+            {
+                object name = this.registryKey.GetValue(fontNames[i]);
+                if (name != null)
+                {
+                    FontInfo info = new FontInfo();
+                    info.NameInRegistry = fontNames[i];
+                    info.FileNameInRegistry = name as string;
+                    info.Disable = false;
+                    infos.Add(info);
+                }
+            }
+
+            return infos;
+
         }
 
 
@@ -81,7 +132,7 @@ namespace FontManager.FontService
 
             if (File.Exists(destinationFontFile) && CheckFontIntalledInRegistry(fileNoExtentsion, fileName))
                 return InstallError.INSTALL_DUPLICATE;
-               
+
             fileManager.CopyFileTo(filepath, fontFolderSystem);
             this.registryKey.SetValue(fileNoExtentsion, fileName);
 
@@ -90,7 +141,6 @@ namespace FontManager.FontService
 
         public void RemoveFont(string fileName)
         {
-
             string fontFolderSystem = fileManager.GetFontsSystemFolder();
             string destinationFontFile = Path.Combine(fontFolderSystem, fileName);
 

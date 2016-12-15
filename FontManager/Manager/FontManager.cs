@@ -70,6 +70,11 @@ namespace FontManager.Manager
             fontCollection.Add(type);
         }
 
+        public FontFormatCollection GetFontFormatCollection()
+        {
+            return this.fontCollection;
+        }
+
         public IEnumerable<FileInfo> GetAllFontsIntalled()
         {
           return mFileInstance.GetListFile(fontCollection);
