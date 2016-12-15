@@ -19,12 +19,21 @@ namespace FontManager.UI
     {
         private FontManager.Manager.FontManager fontManager;
         private FontInstallation fontInstallation;
+      
         
         public TestActiveFont()
         {
             InitializeComponent();
             fontManager = FontManager.Manager.FontManager.GetInstance();
             fontInstallation = new FontInstallation();
+           
+
+            Load += TestActiveFont_Load;
+        }
+
+        private void TestActiveFont_Load(object sender, EventArgs e)
+        {
+            ///SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
         }
 
         private void btnActive_Click(object sender, EventArgs e)
@@ -33,9 +42,9 @@ namespace FontManager.UI
             string fontName = "Ubuntu-Bold.ttf";
             string fontFolderPath = FileManager.GetInstance().GetFontsFolderProject();
             string fontPath = Path.Combine(Path.Combine(fontFolderPath, "Actived"), fontName);
-           // Logger.d(fontInstallation.InstallFont(fontPath).ToString());
+            Logger.d(fontInstallation.InstallFont(fontPath).ToString());
 
-          fontInstallation.RemoveFont(Path.GetFileName(fontPath));
+          //fontInstallation.RemoveFont(Path.GetFileName(fontPath));
 
         }
 

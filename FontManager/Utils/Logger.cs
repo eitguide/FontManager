@@ -15,25 +15,27 @@ namespace FontManager.Utils
         {
             Console.WriteLine("###Font Info###");
 
-            Console.WriteLine("CopyRight: " + info.Copyright == null ? "" : info.Copyright);
-            Console.WriteLine("FontFamily: " + info.FontFamily == null ? "" :info.FontFamily);
-            Console.WriteLine("FontSubFamily: " + info.FontSubFamily == null ? "" : info.FontSubFamily);
-            Console.WriteLine("UniqueId: " + info.UniqueId == null ? "" : info.UniqueId);
-            Console.WriteLine("FullName: "+ info.FullName == null ? "" : info.FullName);
-            Console.WriteLine("Version: " + info.Version == null ? "" : info.Version);
-            Console.WriteLine("PostscriptName: " + info.PostscriptName == null ? "" : info.PostscriptName);
-            Console.WriteLine("TradeMark: " + info.TradeMark == null ? "" : info.TradeMark);
+            Console.WriteLine(info.Copyright == null ? "NULL" : "CopyRight: " + info.Copyright);
+            Console.WriteLine(info.FontFamily == null ? "NULL" : "FontFamily: " + info.FontFamily);
+            Console.WriteLine(info.FontSubFamily == null ? "NULL" : "FontSubFamily: " + info.FontSubFamily);
+            Console.WriteLine(info.UniqueId == null ? "NULL" : "UniqueId: " + info.UniqueId);
+            Console.WriteLine(info.FullName == null ? "NULL" : "FullName: " + info.FullName);
+            Console.WriteLine(info.Version == null ? "NULL" : "Version: " + info.Version);
+            Console.WriteLine(info.PostscriptName == null ? "NULL" : "PostscriptName: " + info.PostscriptName);
+            Console.WriteLine(info.TradeMark == null ? "NULL" : "TradeMark: " + info.TradeMark);
 
-            Console.WriteLine("Manufacturer: " + info.Manufacturer == null ? "" : info.Manufacturer);
-            Console.WriteLine("Designer: " + info.Designer == null ? "" : info.Designer);
-            Console.WriteLine("Description: " + info.Description == null ? "" : info.Description);
-            Console.WriteLine("Vender URL: " + info.VendorURL == null ? "" : info.VendorURL);
-            Console.WriteLine("Designer URL: " + info.DesignerURL == null ? "" : info.DesignerURL);
-            Console.WriteLine("License: " + info.License == null ? "" : info.License);
+            Console.WriteLine(info.Manufacturer == null ? "NULL" : "Manufacturer: " + info.Manufacturer);
+            Console.WriteLine(info.Designer == null ? "NULL" : "Designer: " + info.Designer);
+            Console.WriteLine(info.Description == null ? "NULL" : "Description: " + info.Description);
+            Console.WriteLine(info.VendorURL == null ? "NULL" : "Vender URL: " + info.VendorURL);
+            Console.WriteLine(info.DesignerURL == null ? "NULL" : "Designer URL: " + info.DesignerURL);
+            Console.WriteLine(info.License == null ? "NULL" : "License: " + info.License);
+            Console.WriteLine(info.StringLanguageSupported == null ? "NULL" : "Language Supported: " + info.StringLanguageSupported);
 
-            Console.WriteLine("Preperred Family: " + info.PreferredFamily == null ? "" : info.PreferredFamily);
-            Console.WriteLine("Preperred SubFamily: " + info.PreferredSubFamily == null ? "" : info.PreferredSubFamily);
-            Console.WriteLine("Mac FullName: " + info.MacFullName == null ? "" : info.MacFullName);
+            Console.WriteLine(info.PreferredFamily == null ? "NULL" : "Preperred Family: " + info.PreferredFamily);
+            Console.WriteLine(info.PreferredSubFamily == null ? "NULL" : "Preperred SubFamily: " + info.PreferredSubFamily);
+            Console.WriteLine(info.MacFullName == null ? "NULL" : info.MacFullName);
+            Console.WriteLine(info.MacFullName == null ? "NULL" : info.MacFullName);
         }
 
 

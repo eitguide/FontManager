@@ -2,6 +2,7 @@
 using FontManager.FontService;
 using FontManager.Model;
 using FontManager.Properties;
+using FontManager.SharedData;
 using FontManager.Utils;
 using SharpFont;
 using SharpFont.TrueType;
@@ -33,8 +34,11 @@ namespace FontMananger.UI
         private const int FORM_PADDING = 5;
         private const int FORM_BORDER_THICKNESS = 4;
 
-        private FontManager.Manager.FontManager fontManager = FontManager.Manager.FontManager.GetInstance();
+        private FontManager.Manager.FontManager fontManager;
         private FontReading fontReading;
+        private FontInstallation fontInstallation;
+        private FileManager fileManager;
+
 
         public frmMain()
         {
@@ -64,13 +68,22 @@ namespace FontMananger.UI
             //set icon for application
             this.Icon = FontManager.Properties.Resources.icon_application;
 
+          
+
+         
+            fontReading = new FontReading();
+            fontInstallation = new FontInstallation();
+            fontManager = FontManager.Manager.FontManager.GetInstance();
+            fileManager = FileManager.GetInstance();
+            
+
+            lbFonts.SelectedIndex = -1;
+
             //setup font support
             SetupSupportFontFormat();
-
-            //init FontReading
-            fontReading = new FontReading();
-
         }
+
+      
 
         private void SetupSupportFontFormat()
         {
@@ -83,40 +96,44 @@ namespace FontMananger.UI
         private void FrmMain_Load(object sender, EventArgs e)
         {
 
+            SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
+            lbFonts.DataSource = SharedData.FontInfos;
 
 
-            List<FileInfo> files = (List<FileInfo>)fontManager.GetAllFontsIntalled();
+            SharedData.FontInfos.ForEach(i => Logger.d(i.FileNameInRegistry + ", "));
+            lbFonts.SelectedIndexChanged += lbFonts_SelectedIndexChanged;
+            //List<FileInfo> files = (List<FileInfo>)fontManager.GetAllFontsIntalled();
 
-            for (int i = 0; i < 10 /*files.Count*/; i++)
-            {
-                Logger.d("FontPath: " + files[i].FullName);
-                FontInfo fontInfo = fontReading.ReadingFontInfo(files[i].FullName);
-                Logger.FontInfomation(fontInfo);
-            }
+            //for (int i = 0; i < 10 /*files.Count*/; i++)
+            //{
+            //    Logger.d("FontPath: " + files[i].FullName);
+            //    FontInfo fontInfo = fontReading.ReadingFontInfo(files[i].FullName);
+            //    Logger.FontInfomation(fontInfo);
+            //}
         }
 
-        private void TestFont()
-        {
-            Library lib = new Library();
+        //private void TestFont()
+        //{
+        //    Library lib = new Library();
 
-            FontManager.Manager.FontManager fontManager = FontManager.Manager.FontManager.GetInstance();
-            string fontFolderPath = FileManager.GetInstance().GetFontsFolderProject();
+        //    FontManager.Manager.FontManager fontManager = FontManager.Manager.FontManager.GetInstance();
+        //    string fontFolderPath = FileManager.GetInstance().GetFontsFolderProject();
 
-            string fontPath = Path.Combine(Path.Combine(fontFolderPath, "Actived"), "Cousine-Regular-Latin.ttf");
+        //    string fontPath = Path.Combine(Path.Combine(fontFolderPath, "Actived"), "Cousine-Regular-Latin.ttf");
 
-            FontInfo info = fontReading.ReadingFontInfo(fontPath);
-            Logger.FontInfomation(info);
-            Face face = new Face(lib, fontPath);
+        //    FontInfo info = fontReading.ReadingFontInfo(fontPath);
+        //    Logger.FontInfomation(info);
+        //    Face face = new Face(lib, fontPath);
 
-            for (int i = 0; i < face.CharmapsCount; i++)
-            {
-                Console.WriteLine(face.CharMaps[i].PlatformId);
-                Console.WriteLine(face.CharMaps[i].Encoding);
-                Console.WriteLine(face.CharMaps[i].EncodingId);
-            }
+        //    for (int i = 0; i < face.CharmapsCount; i++)
+        //    {
+        //        Console.WriteLine(face.CharMaps[i].PlatformId);
+        //        Console.WriteLine(face.CharMaps[i].Encoding);
+        //        Console.WriteLine(face.CharMaps[i].EncodingId);
+        //    }
 
-          //  PrintSfnt(face);
-        }
+        //  //  PrintSfnt(face);
+        //}
 
         private void BtnMinimize_Click(object sender, EventArgs e)
         {
@@ -271,5 +288,17 @@ namespace FontMananger.UI
             pnlBorder.BackColor = color;
         }
 
+        private void lbFonts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FontInfo info = lbFonts.SelectedItem as FontInfo;
+            Logger.d(info == null ? "" : info.NameInRegistry);
+
+           
+            string filePath = Path.Combine(fileManager.GetFontsSystemFolder(), info.FileNameInRegistry);
+            fontReading.ReadingFontInfo(filePath, ref info);
+            Logger.FontInfomation(info);
+        }
+
+       
     }
 }

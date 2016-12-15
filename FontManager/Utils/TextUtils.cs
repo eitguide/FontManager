@@ -18,5 +18,10 @@ namespace FontManager.Utils
             return Regex.Replace(subString, @"\b(\w)", m => m.Value.ToUpper());
     
         }
+
+        public static string DecodeFontValue(string fileName)
+        {
+            return Regex.Replace(fileName, @"-", "");
+        }
     }
 }

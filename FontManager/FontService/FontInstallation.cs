@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using FontManager.Model;
+using FontManager.Utils;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,16 +22,47 @@ namespace FontManager.FontService
 
         private RegistryKey registryKey;
         private FileManager fileManager;
+
         public FontInstallation()
         {
             registryKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts", true);
             fileManager = FileManager.GetInstance();
         }
 
-        public string[] GetListFontNameInstall()
+        public string[] GetListFontNameInstalled()
         {
             return registryKey.GetValueNames();
         }
+
+        public List<FontInfo> GetListFontInfoInstalled()
+        {
+            String[] fontNames = GetListFontNameInstalled();
+            Logger.d("######" + fontNames.Length.ToString());
+            
+            if (fontNames == null || fontNames.Length == 0)
+                return null;
+
+
+           
+
+            List <FontInfo> infos = new List<FontInfo>();
+            int count = fontNames.Length;
+            for (int i = 0; i < count; i++)
+            {
+                object name = this.registryKey.GetValue(fontNames[i]);
+                if (name != null)
+                {
+                    FontInfo info = new FontInfo();
+                    info.NameInRegistry = fontNames[i];
+                    info.FileNameInRegistry = name as string;
+                    info.Disable = false;
+                    infos.Add(info);
+                }
+            }
+
+            return infos;
+        }
+
 
         private bool CheckFontIntalledInRegistry(string fileNameNoExtenstoin, string fileName)
         {

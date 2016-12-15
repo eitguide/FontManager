@@ -20,7 +20,7 @@ namespace FontManager.FontService
             lib = new Library();
         }
 
-        public FontInfo ReadingFontInfo(String filePath)
+        public FontInfo ReadingFontInfo(String filePath, ref FontInfo fontInfo)
         {
             if (string.IsNullOrEmpty(filePath))
                 return null;
@@ -30,8 +30,7 @@ namespace FontManager.FontService
             if (face == null)
                 return null;
 
-            FontInfo fontInfo = new FontInfo();
-
+           
             fontInfo.Location = filePath;
             fontInfo.FontFamily = face.FamilyName;
             fontInfo.FontSubFamily = face.StyleName;
@@ -51,13 +50,18 @@ namespace FontManager.FontService
             }
 
             fontInfo.Platform = stringBuilder.ToString();
+
             OS2 os2 = face.GetSfntTable(SfntTag.OS2) as OS2;
-            fontInfo.VendorID = System.Text.Encoding.UTF8.GetString(os2.VendorId);
+            if (os2 != null)
+                fontInfo.VendorID = System.Text.Encoding.UTF8.GetString(os2.VendorId);
+            else
+                fontInfo.VendorID = null;
 
             int count = (int)face.GetSfntNameCount();
             int curentNameIndex = -1;
             // Utils.Logger.CodeIdsFont(face);
             fontInfo.LanguageSupported = GetLanguageSupport(face);
+
             fontInfo.StringLanguageSupported =  string.Join(", ", fontInfo.LanguageSupported.ToArray());
 
             for (int i = 0; i < count; i++)

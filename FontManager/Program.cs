@@ -19,7 +19,7 @@ namespace FontManager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TestActiveFont());
+            Application.Run(new frmMain());
 
         }
     }
