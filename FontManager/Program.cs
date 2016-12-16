@@ -1,5 +1,4 @@
 ﻿using FontManager.UI;
-using FontMananger.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;

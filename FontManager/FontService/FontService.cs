@@ -469,7 +469,7 @@ namespace FontManager.FontService
             // if selected, mark the background differently
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                e.Graphics.FillRectangle(Brushes.CornflowerBlue, e.Bounds);
+                e.Graphics.FillRectangle(Brushes.Red, e.Bounds);
                 //e.Graphics.FillRectangle(Brushes.Red, e.Bounds);
             }
             else

@@ -1,11 +1,14 @@
 ﻿using FontManager.Callback;
 using FontManager.FontService;
+using FontManager.Model;
 using FontManager.Properties;
+using FontManager.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -13,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-namespace FontMananger.UI
+namespace FontManager.UI
 {
     public partial class frmMain : Form
     {
@@ -32,19 +35,22 @@ namespace FontMananger.UI
         private Color RADIO_BTN_SELECTED_COLOR = Color.FromArgb(177, 188, 189);
         private Color TITLE_COLOR = Color.FromArgb(137, 148, 149);      // #939e9f
         private ContextMenuStrip cmSearchType = new ContextMenuStrip();
-       
-        
+
+
+
+        #region NghiaVN Variable
+        private FontManager.Manager.FontManager fontManager;
+        private FontReading fontReading;
+        private FontInstallation fontInstallation;
+        private FileManager fileManager;
+
+        #endregion
 
         public frmMain()
         {
             InitializeComponent();
             Load += FrmMain_Load;
-           
-            
-        }
 
-        private void FrmMain_Load(object sender, EventArgs e)
-        {
             // Set mau sac cho cac thanh phan cua form
             SetFormBorderColor(Color.FromArgb(127, 140, 141));          // #7f8c8d
             pnlTitle.BackColor = TITLE_COLOR;
@@ -80,7 +86,7 @@ namespace FontMananger.UI
 
             // Khoi tao mot vai thanh phan
             MakeFormBackgroundTransparent(Color.MediumAquamarine);
-            BtnViewSimpleSample_Click(sender, e);
+          
 
             cmSearchType.Items.Add("All");
             cmSearchType.Items.Add("PostScript name");
@@ -94,6 +100,60 @@ namespace FontMananger.UI
             cmSearchType.Items.Add("Designer name");
             //cmSearchOption.Items.Add("Repertoire");
             ((ToolStripMenuItem)cmSearchType.Items[0]).Checked = true;
+
+           
+        }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+
+            BtnViewSimpleSample_Click(sender, e);
+
+
+
+            #region NghiaNV
+            fileManager = FileManager.GetInstance();
+            fontManager = FontManager.Manager.FontManager.GetInstance();
+            fontInstallation = new FontInstallation();
+
+
+            fontReading = new FontReading();
+            fontInstallation = new FontInstallation();
+            fontManager = FontManager.Manager.FontManager.GetInstance();
+            fileManager = FileManager.GetInstance();
+
+            lbFonts.SelectedIndex = -1;
+          
+            //setup font support
+            SetupSupportFontFormat();
+
+            SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
+            lbFonts.DataSource = SharedData.SharedData.FontInfos;
+
+
+            SharedData.SharedData.FontInfos.ForEach(i => Logger.d(i.FileNameInRegistry + ", "));
+            lbFonts.SelectedIndexChanged += lbFonts_SelectedIndexChanged;
+
+            lbFonts.BackColor = ColorHelper.ConvertToARGB("#95a5a6");
+            #endregion
+        }
+
+       
+        private void lbFonts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FontInfo info = lbFonts.SelectedItem as FontInfo;
+            Logger.d(info == null ? "" : info.NameInRegistry);
+
+            string filePath = Path.Combine(fileManager.GetFontsSystemFolder(), info.FileNameInRegistry);
+            fontReading.ReadingFontInfo(filePath, ref info);
+            Logger.FontInfomation(info);
+        
+         }
+
+        private void SetupSupportFontFormat()
+        {
+            fontManager.AddFontFormat(FontType.TTF);
+            fontManager.AddFontFormat(FontType.OTF);
         }
 
         private void CmSearchOption_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
