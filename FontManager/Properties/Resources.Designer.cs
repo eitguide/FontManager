@@ -63,6 +63,26 @@ namespace FontManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _1481836849_General___Office_26 {
+            get {
+                object obj = ResourceManager.GetObject("_1481836849_General___Office_26", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap font_2 {
+            get {
+                object obj = ResourceManager.GetObject("font_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap grid {
             get {
                 object obj = ResourceManager.GetObject("grid", resourceCulture);
@@ -71,12 +91,52 @@ namespace FontManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Icon icon_application {
+        internal static System.Drawing.Bitmap icon_center_alignment_16x16 {
             get {
-                object obj = ResourceManager.GetObject("icon_application", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                object obj = ResourceManager.GetObject("icon_center_alignment_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_center_alignment_2_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_center_alignment_2_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_center_alignment_2_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("icon_center_alignment_2_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_center_alignment_3_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_center_alignment_3_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_checkbox_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_checkbox_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -86,6 +146,36 @@ namespace FontManager.Properties {
         internal static System.Drawing.Bitmap icon_close_16x16 {
             get {
                 object obj = ResourceManager.GetObject("icon_close_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_down_arrow_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_down_arrow_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_font_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_font_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_font_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("icon_font_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,6 +213,56 @@ namespace FontManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_grid_layout_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_grid_layout_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_grid_layout_2_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("icon_grid_layout_2_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_grid_layout_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("icon_grid_layout_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_info_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_info_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_info_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("icon_info_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_maximize_16x16 {
             get {
                 object obj = ResourceManager.GetObject("icon_maximize_16x16", resourceCulture);
@@ -153,9 +293,9 @@ namespace FontManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap minus_sign {
+        internal static System.Drawing.Bitmap icon_minimize_2_16x16 {
             get {
-                object obj = ResourceManager.GetObject("minus_sign", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_minimize_2_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +303,9 @@ namespace FontManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap minus_symbol {
+        internal static System.Drawing.Bitmap icon_minimize_3_16x16 {
             get {
-                object obj = ResourceManager.GetObject("minus_symbol", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_minimize_3_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,19 +313,9 @@ namespace FontManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap plus_symbol {
+        internal static System.Drawing.Bitmap icon_plus_16x16 {
             get {
-                object obj = ResourceManager.GetObject("plus_symbol", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap tick_box {
-            get {
-                object obj = ResourceManager.GetObject("tick_box", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_plus_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

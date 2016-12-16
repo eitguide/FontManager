@@ -66,13 +66,33 @@ namespace FontManager.FontService
                     case SearchType.All:
                         break;
                     case SearchType.Copyright:
+                        string copyRight = data.Source[i].StringLanguageSupported;
+                        if(copyRight != data.Source[i].Copyright && copyRight.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
                     case SearchType.Designer:
+                        string designer = data.Source[i].Designer;
+                        if(designer != null && designer.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
 
                     case SearchType.Family:
+                        string family = data.Source[i].FontFamily;
+                        if(family != null && family.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
                     case SearchType.FileName:
+                        string fileName = data.Source[i].NameInRegistry;
+                        if(fileName != null && fileName.Contains(fileName))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
                     case SearchType.Language:
                         string lang = data.Source[i].StringLanguageSupported;
@@ -80,10 +100,25 @@ namespace FontManager.FontService
                             this.SearchResult.Add(data.Source[i]);
                         break;
                     case SearchType.Manufactuer:
+                        string manufactuer = data.Source[i].Manufacturer;
+                        if(manufactuer != null && manufactuer.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
                     case SearchType.PostScript:
+                        string postscript = data.Source[i].PostscriptName;
+                        if(postscript != null && postscript.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
                     case SearchType.Style:
+                        string style = data.Source[i].FontSubFamily;
+                        if(style != null && style.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
                     
                     default:

@@ -9,6 +9,7 @@ namespace FontManager.SharedData
 {
     public class SharedData
     {
-        public static List<FontInfo> FontInfos;  
+        public static List<FontInfo> FontInfos;
+        public static List<FontInfo> SearchResult;
     }
 }

@@ -38,21 +38,16 @@ namespace FontManager.UI
 
         private void btnActive_Click(object sender, EventArgs e)
         {
-
-            string fontName = "Ubuntu-Bold.ttf";
+            string fontName = "VNF-Strangelove-text.ttf";
             string fontFolderPath = FileManager.GetInstance().GetFontsFolderProject();
-            string fontPath = Path.Combine(Path.Combine(fontFolderPath, "Actived"), fontName);
+            string fontPath = Path.Combine(Path.Combine(fontFolderPath, "Disable"), fontName);
             Logger.d(fontInstallation.InstallFont(fontPath).ToString());
-
-          //fontInstallation.RemoveFont(Path.GetFileName(fontPath));
-
         }
 
         private void btnDisable_Click(object sender, EventArgs e)
         {
-            string pathFont = Path.Combine(FileManager.GetInstance().GetFontsSystemFolder(), "RobotoSlab-Thin.ttf");
-            fontManager.DisableFont(pathFont);
-
+            string pathFont = Path.Combine(FileManager.GetInstance().GetFontsSystemFolder(), "Ubuntu-Bold.ttf");
+            fontInstallation.RemoveFont(Path.GetFileName(pathFont));
         }
     }
 }

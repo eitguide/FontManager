@@ -71,6 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callback\SearchFailedEventArgs.cs" />
+    <Compile Include="Callback\SearchFinishedEventArgs.cs" />
+    <Compile Include="Callback\SearchTypeEventArgs.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="FontService\FontInstallation.cs" />
@@ -78,6 +81,8 @@
     <Compile Include="FontService\InstallError.cs" />
     <Compile Include="FontService\LanguageMapping.cs" />
     <Compile Include="FontService\NameTableId.cs" />
+    <Compile Include="FontService\SearchEngine.cs" />
+    <Compile Include="FontService\SearchType.cs" />
     <Compile Include="Manager\FileManager.cs" />
     <Compile Include="FontService\FontFormat.cs" />
     <Compile Include="FontService\FontService.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="UI\TestActiveFont.Designer.cs">
       <DependentUpon>TestActiveFont.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ColorHelper.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -147,6 +153,35 @@
     <None Include="Fonts\Actived\Ubuntu-Medium.ttf" />
     <None Include="Fonts\Actived\Ubuntu-MediumItalic.ttf" />
     <None Include="Fonts\Actived\Ubuntu-Regular.ttf" />
+    <None Include="Fonts\Disable\Alegreya-Regular.otf" />
+    <None Include="Fonts\Disable\AlexBrush-Regular.ttf" />
+    <None Include="Fonts\Disable\Athiti-Bold.ttf" />
+    <None Include="Fonts\Disable\Athiti-ExtraLight.ttf" />
+    <None Include="Fonts\Disable\Athiti-Light.ttf" />
+    <None Include="Fonts\Disable\Athiti-Medium.ttf" />
+    <None Include="Fonts\Disable\Athiti-Regular.ttf" />
+    <None Include="Fonts\Disable\Athiti-SemiBold.ttf" />
+    <None Include="Fonts\Disable\Chonburi-Regular.ttf" />
+    <None Include="Fonts\Disable\Cousine-Regular-Latin.ttf" />
+    <None Include="Fonts\Disable\Molle-Regular.ttf" />
+    <None Include="Fonts\Disable\RobotoSlab-Bold.ttf" />
+    <None Include="Fonts\Disable\RobotoSlab-Light.ttf" />
+    <None Include="Fonts\Disable\RobotoSlab-Regular.ttf" />
+    <None Include="Fonts\Disable\RobotoSlab-Thin.ttf" />
+    <None Include="Fonts\Disable\SpaceMono-Bold.ttf" />
+    <None Include="Fonts\Disable\SpaceMono-BoldItalic.ttf" />
+    <None Include="Fonts\Disable\SpaceMono-Italic.ttf" />
+    <None Include="Fonts\Disable\SpaceMono-Regular.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-Bold.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-BoldItalic.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-Italic.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-Light.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-LightItalic.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-Medium.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-MediumItalic.ttf" />
+    <None Include="Fonts\Disable\Ubuntu-Regular.ttf" />
+    <None Include="Fonts\Disable\VNF-ACaslonPro-Regular.ttf" />
+    <None Include="Fonts\Disable\VNF-Strangelove-text.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -164,6 +199,24 @@
     <Content Include="Fonts\Actived\Alegreya - SIL Open Font License.txt" />
     <Content Include="Fonts\Actived\AlexBrush - SIL Open Font License.txt" />
     <Content Include="Fonts\Actived\Cousine - SIL Open Font License 1.1.txt" />
+    <None Include="Resources\icon_application.ico" />
+    <Content Include="Fonts\Actived\UFL.txt" />
+    <Content Include="Fonts\Disable\Alegreya - SIL Open Font License.txt" />
+    <Content Include="Fonts\Disable\AlexBrush - SIL Open Font License.txt" />
+    <Content Include="Fonts\Disable\Cousine - SIL Open Font License 1.1.txt" />
+    <Content Include="Fonts\Disable\UFL.txt" />
+    <None Include="Resources\1481836849_General_-_Office_26.png" />
+    <None Include="Resources\1481837152_114_Grid2.png" />
+    <None Include="Resources\1481837244_114_Grid2.png" />
+    <None Include="Resources\1481837320_icon-grid.png" />
+    <None Include="Resources\1481837387_General_-_Office_26.png" />
+    <None Include="Resources\center-alignment%281%29.png" />
+    <None Include="Resources\center-alignment%282%29.png" />
+    <None Include="Resources\center-alignment.png" />
+    <None Include="Resources\down-arrow.png" />
+    <None Include="Resources\font%281%29.png" />
+    <None Include="Resources\font.png" />
+    <None Include="Resources\font_2.png" />
     <None Include="Resources\grid.png" />
     <None Include="Resources\icon_close_16x16.png" />
     <None Include="Resources\icon_fullscreen_16x16.png" />
@@ -172,19 +225,17 @@
     <None Include="Resources\icon_maximize_16x16.png" />
     <None Include="Resources\icon_maximize_exit_16x16.png" />
     <None Include="Resources\icon_minimize_16x16.png" />
+    <None Include="Resources\info%281%29.png" />
+    <None Include="Resources\info.png" />
     <None Include="Resources\minus-sign.png" />
     <None Include="Resources\minus-symbol.png" />
     <None Include="Resources\plus-symbol.png" />
     <None Include="Resources\tick-box%281%29.png" />
     <None Include="Resources\tick-box%282%29.png" />
     <None Include="Resources\tick-box.png" />
-    <None Include="Resources\icon_application.ico" />
-    <Content Include="Fonts\Actived\UFL.txt" />
     <Content Include="x86\freetype6.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Fonts\Disable\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\LibFont\LibFont.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,5 +8,6 @@ namespace FontManager.Model
 {
     public class CacheFonts
     {
+
     }
 }

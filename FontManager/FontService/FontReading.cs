@@ -28,6 +28,8 @@ namespace FontManager.FontService
             try {
                 Face face = new Face(this.lib, filePath);
 
+                //Logger.CodeIdsFont(face);
+
                 if (face == null)
                     return null;
 
