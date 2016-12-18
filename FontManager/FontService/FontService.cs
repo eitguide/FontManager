@@ -8,6 +8,7 @@ using System.IO;
 using SharpFont;
 using FontManager.Model;
 using System.Windows.Forms;
+using FontManager.Utils;
 
 namespace FontManager.FontService
 {
@@ -464,31 +465,32 @@ namespace FontManager.FontService
         #endregion
 
 
-        public static void DrawFontItem(DrawItemEventArgs e, FontInfo fontInfo)
+        public static SolidBrush ColorSelected = new SolidBrush(ColorHelper.ConvertToARGB("#ecf0f1"));
+
+        public static void DrawFontItem(DrawItemEventArgs e, FontInfo fontInfo, ListBox lb)
         {
+
             // if selected, mark the background differently
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                e.Graphics.FillRectangle(Brushes.Red, e.Bounds);
-                //e.Graphics.FillRectangle(Brushes.Red, e.Bounds);
+                e.Graphics.FillRectangle(ColorSelected, e.Bounds);
             }
             else
             {
-                e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+                e.Graphics.FillRectangle(new SolidBrush(e.BackColor), e.Bounds);
             }
 
             // draw the text within the bounds
             StringFormat _fmt = new StringFormat();
             _fmt.Alignment = StringAlignment.Near;
-            _fmt.LineAlignment = StringAlignment.Near;
+            _fmt.LineAlignment = StringAlignment.Center;
 
-            Rectangle titleBounds = new Rectangle(e.Bounds.X,
-                                                  e.Bounds.Y,
+            Rectangle titleBounds = new Rectangle(e.Bounds.X + 8,
+                                                  e.Bounds.Y, 
                                                   e.Bounds.Width,
-                                                  (int)e.Font.GetHeight() + 2);
+                                                  (int)e.Font.GetHeight());
 
             e.Graphics.DrawString(fontInfo.NameInRegistry, e.Font, Brushes.Black, titleBounds, _fmt);
-
 
             // put some focus rectangle
             e.DrawFocusRectangle();

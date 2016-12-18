@@ -12,7 +12,7 @@ namespace FontManager.UI.Control
     {
         public FontListBox()
         {
-            this.DrawMode = DrawMode.OwnerDrawFixed;
+            this.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
         protected override void OnDrawItem(DrawItemEventArgs e)
@@ -20,8 +20,15 @@ namespace FontManager.UI.Control
             if(this.Items.Count > 0)
             {
                 FontInfo info = this.Items[e.Index] as FontInfo;
-                FontService.FontService.DrawFontItem(e, info);
+                FontService.FontService.DrawFontItem(e, info, this);
             }
+        }
+
+        protected override void OnMeasureItem(MeasureItemEventArgs e)
+        {
+            //base.OnMeasureItem(e);
+            e.ItemHeight = 200;
+            Console.WriteLine("dfdahfjkdshfjkasdfdsf");
         }
 
         protected override void OnPaint(PaintEventArgs e)

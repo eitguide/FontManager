@@ -80,12 +80,12 @@ namespace FontManager.FontService
         {
 
             List<String> fontNames = GetListFontNameInstalled();
-         
+
 
             if (fontNames == null || fontNames.Count == 0)
                 return null;
 
-          
+
             for (int i = 0; i < fontNames.Count; i++)
             {
                 string item = (string)this.registryKey.GetValue(fontNames[i]);
@@ -117,7 +117,9 @@ namespace FontManager.FontService
 
         private bool CheckFontIntalledInRegistry(string fileNameNoExtenstoin, string fileName)
         {
-            if (this.registryKey.GetValueNames().Contains(fileNameNoExtenstoin) && (string)this.registryKey.GetValue(fileNameNoExtenstoin) == fileName)
+            bool condi = this.registryKey.GetValueNames().Contains(fileNameNoExtenstoin);
+            bool condi2 = (string)this.registryKey.GetValue(fileNameNoExtenstoin) == fileName;
+            if (condi && condi2)
                 return true;
             return false;
         }
@@ -130,7 +132,9 @@ namespace FontManager.FontService
             string fontFolderSystem = fileManager.GetFontsSystemFolder();
             string destinationFontFile = Path.Combine(fontFolderSystem, fileName);
 
-            if (File.Exists(destinationFontFile) && CheckFontIntalledInRegistry(fileNoExtentsion, fileName))
+            bool exits = File.Exists(destinationFontFile);
+
+            if (exits || CheckFontIntalledInRegistry(fileNoExtentsion, fileName))
                 return InstallError.INSTALL_DUPLICATE;
 
             fileManager.CopyFileTo(filepath, fontFolderSystem);
@@ -153,6 +157,25 @@ namespace FontManager.FontService
 
             if (File.Exists(destinationFontFile))
                 fileManager.DeleteFile(destinationFontFile);
+        }
+
+        public void DisableFont(string nameInRegistry)
+        {
+            string fileName = (string)this.registryKey.GetValue(nameInRegistry);
+            string fontFolderSystem = fileManager.GetFontsSystemFolder();
+            string destinationFontFile = Path.Combine(fontFolderSystem, fileName);
+
+            string key = Path.GetFileNameWithoutExtension(fileName);
+
+            string disableFontPath = Path.Combine(fileManager.GetFontsFolderProject(), "Disable");
+
+            if (!File.Exists(destinationFontFile))
+                return;
+
+            this.registryKey.DeleteValue(nameInRegistry);
+
+
+            fileManager.MoveFile(destinationFontFile, disableFontPath);
         }
 
     }

@@ -8,7 +8,6 @@ namespace FontManager.Model
 {
    public class FontInfo
     {
-        
         public string Copyright { get; set; }
         public string FontFamily { get; set; }
         public string FontSubFamily { get; set; }
@@ -40,6 +39,7 @@ namespace FontManager.Model
         //support for load font info
         public string NameInRegistry { get; set; }
         public string FileNameInRegistry { get; set; }
+
         public bool Disable { get; set; }
         public bool Loaded { get; set; }
         

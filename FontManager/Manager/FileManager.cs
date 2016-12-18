@@ -97,7 +97,8 @@ namespace FontManager
         {
             if (CheckValidInput(filePath, destinationPath))
             {
-                File.Move(filePath, GetDestinationPath(filePath, destinationPath));
+                string des = GetDestinationPath(filePath, destinationPath);
+                File.Move(filePath, des);
             }
         }
 
