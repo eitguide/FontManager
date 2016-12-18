@@ -99,6 +99,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedData\SharedData.cs" />
+    <Compile Include="UI\Control\FontInfoUc.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Control\FontInfoUc.designer.cs">
+      <DependentUpon>FontInfoUc.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Control\FontListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -130,6 +136,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Control\FontInfoUc.resx">
+      <DependentUpon>FontInfoUc.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -233,6 +242,12 @@
     <None Include="Resources\tick-box%281%29.png" />
     <None Include="Resources\tick-box%282%29.png" />
     <None Include="Resources\tick-box.png" />
+    <None Include="Resources\1481916734_font_size.png" />
+    <None Include="Resources\1481916832_font_size.png" />
+    <None Include="Resources\1481916993_29.Mac.png" />
+    <None Include="Resources\1481917059_header-account-image-line.png" />
+    <None Include="Resources\1481917161_user_male3.png" />
+    <None Include="Resources\1481917416_Noun_Project_100Icon_10px_grid-07.png" />
     <Content Include="x86\freetype6.dll" />
   </ItemGroup>
   <ItemGroup />

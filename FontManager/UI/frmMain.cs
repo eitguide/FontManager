@@ -145,15 +145,64 @@ namespace FontManager.UI
             rtxtViewAz09Sample.SelectionAlignment = HorizontalAlignment.Center;
             rtxtViewAz09Sample.Select(1, 0);
             #endregion
+
+            //font info view 
+            #region Tamphu.pn
+
+            FontInfoUc uc = new FontInfoUc("PostScript name", "none");
+            FontInfoUc uc2 = new FontInfoUc("Language", "none");
+            FontInfoUc uc1 = new FontInfoUc("Fullname", "none");
+            FontInfoUc uc3 = new FontInfoUc("Family", "none");
+            FontInfoUc uc4 = new FontInfoUc("Style", "none");
+            FontInfoUc uc5 = new FontInfoUc("Kind", "none");
+            FontInfoUc uc6 = new FontInfoUc("Script", "none");
+            FontInfoUc uc7 = new FontInfoUc("Verson", "none");
+            FontInfoUc uc8 = new FontInfoUc("Location", "none");
+            FontInfoUc uc9 = new FontInfoUc("Unique name", "none");
+            FontInfoUc uc10 = new FontInfoUc("Manufacturer", "none");
+            FontInfoUc uc11 = new FontInfoUc("Designer", "none");
+            FontInfoUc uc12 = new FontInfoUc("Copyright", "none");
+            FontInfoUc uc13 = new FontInfoUc("TradeMark", "none");
+            FontInfoUc uc14 = new FontInfoUc("License", "none");
+            FontInfoUc uc15 = new FontInfoUc("GlyphCount", "none");
+
+            pnlFontInfoBottomView.Controls.Add(uc15);
+            uc15.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc14);
+            uc14.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc13);
+            uc13.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc12);
+            uc12.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc11);
+            uc11.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc10);
+            uc10.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc9);
+            uc9.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc8);
+            uc8.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc7);
+            uc7.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc6);
+            uc6.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc2);
+            uc2.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc5);
+            uc5.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc4);
+            uc4.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc3);
+            uc3.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc1);
+            uc1.Dock = DockStyle.Top;
+            pnlFontInfoBottomView.Controls.Add(uc);
+            uc.Dock = DockStyle.Top;
+            #endregion
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-
-            BtnViewAz09Sample_Click(sender, e);
-            BtnAllFonts_Click(sender, e);
-
-
             #region NghiaNV
             fileManager = FileManager.GetInstance();
             fontManager = FontManager.Manager.FontManager.GetInstance();
@@ -179,10 +228,25 @@ namespace FontManager.UI
 
             lbFonts.BackColor = ColorHelper.ConvertToARGB("#95a5a6");
             #endregion
+
+            #region Tamphu.pn
+            BtnViewAz09Sample_Click(sender, e);
+            BtnAllFonts_Click(sender, e);
+
+            if (lbFonts.Items.Count > 0)
+            {
+                lbFonts.SelectedIndex = -1;
+                lbFonts.SelectedIndex = 0;
+            }
+            #endregion Tamphu.pn
         }
 
         private void lbFonts_SelectedIndexChanged(object sender, EventArgs e)
         {
+            #region Tamphu.pn
+            if (lbFonts.SelectedItem == null) return;
+            #endregion
+
             FontInfo info = lbFonts.SelectedItem as FontInfo;
             Logger.d(info == null ? "" : info.NameInRegistry);
 
@@ -192,26 +256,102 @@ namespace FontManager.UI
 
             selectedFontPath = filePath;
 
-            // Cai font hien thi cho A-z 0-9 sample
             FontFamily ff = GetFontFamilyFromLocation(filePath);
+            FontStyle fs = FontStyle.Regular;
+            if (info.FontSubFamily == FontStyle.Bold.ToString())
+                fs = FontStyle.Bold;
+            else if (info.FontSubFamily == FontStyle.Italic.ToString())
+                fs = FontStyle.Italic;
+            else if (info.FontSubFamily == FontStyle.Regular.ToString())
+                fs = FontStyle.Regular;
+            else if (info.FontSubFamily == FontStyle.Strikeout.ToString())
+                fs = FontStyle.Strikeout;
+            else if (info.FontSubFamily == FontStyle.Underline.ToString())
+                fs = FontStyle.Underline;
+            // Cai font hien thi cho A-z 0-9 sample
             if (ff == null)
                 rtxtViewAz09Sample.Font = new Font(defaultFontFamilyViewSample, rtxtViewAz09Sample.Font.Size);
             else
-                rtxtViewAz09Sample.Font = new Font(ff, rtxtViewAz09Sample.Font.Size);
+                rtxtViewAz09Sample.Font = new Font(ff, rtxtViewAz09Sample.Font.Size, fs);
 
             // Cai font hien thi cho Sentences sample
             if (ff == null)
                 rtxtViewSentencesSample.Font = new Font(defaultFontFamilyViewSample, rtxtViewSentencesSample.Font.Size);
             else
-                rtxtViewSentencesSample.Font = new Font(ff, rtxtViewSentencesSample.Font.Size);
+                rtxtViewSentencesSample.Font = new Font(ff, rtxtViewSentencesSample.Font.Size, fs);
 
             // Cai font hien thi cho Grid sample
             if (ff == null)
                 rtxtViewGridSample.Font = new Font(defaultFontFamilyViewSample, rtxtViewGridSample.Font.Size);
             else
-                rtxtViewGridSample.Font = new Font(ff, rtxtViewGridSample.Font.Size);
+                rtxtViewGridSample.Font = new Font(ff, rtxtViewGridSample.Font.Size, fs);
 
             // Gan thong tin font cho panel font info
+            #region Tamphu.pn
+
+            lblFontInfoTitleFont.Text = lblFontInfoFontStyle.Text = info.FullName;
+            if (ff == null)
+            {
+                lblFontInfoTitleFont.Font = new Font(defaultFontFamilyViewSample, 18);
+                lblFontInfoFontStyle.Font = new Font(defaultFontFamilyViewSample, 18);
+            }
+            else
+            {
+                lblFontInfoTitleFont.Font = new Font(ff, 18);
+                lblFontInfoFontStyle.Font = new Font(defaultFontFamilyViewSample, 18);
+            }
+
+
+
+            string resultLanguage = String.Empty;
+            try
+            {
+                resultLanguage = info.LanguageSupported[0];
+                for (int i = 1; i < info.LanguageSupported.Count; i++)
+                {
+                    resultLanguage += ", " + info.LanguageSupported[i];
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            FontInfoUc uc = (FontInfoUc)pnlFontInfoBottomView.Controls[0];
+            uc.ContentChange(info.GlyphCount.ToString());
+            FontInfoUc uc1 = (FontInfoUc)pnlFontInfoBottomView.Controls[1];
+            uc1.ContentChange(info.License);
+            FontInfoUc uc2 = (FontInfoUc)pnlFontInfoBottomView.Controls[2];
+            uc2.ContentChange(info.TradeMark);
+            FontInfoUc uc3 = (FontInfoUc)pnlFontInfoBottomView.Controls[3];
+            uc3.ContentChange(info.Copyright);
+            FontInfoUc uc4 = (FontInfoUc)pnlFontInfoBottomView.Controls[4];
+            uc4.ContentChange(info.Designer);
+            FontInfoUc uc5 = (FontInfoUc)pnlFontInfoBottomView.Controls[5];
+            uc5.ContentChange(info.Manufacturer);
+            FontInfoUc uc6 = (FontInfoUc)pnlFontInfoBottomView.Controls[6];
+            uc6.ContentChange(info.UniqueId);
+            FontInfoUc uc7 = (FontInfoUc)pnlFontInfoBottomView.Controls[7];
+            uc7.ContentChange(info.Location);
+            FontInfoUc uc8 = (FontInfoUc)pnlFontInfoBottomView.Controls[8];
+            uc8.ContentChange(info.Version);
+            FontInfoUc uc9 = (FontInfoUc)pnlFontInfoBottomView.Controls[9];
+            uc9.ContentChange(info.FontSubFamily);
+            FontInfoUc uc10 = (FontInfoUc)pnlFontInfoBottomView.Controls[10];
+            uc10.ContentChange(resultLanguage);
+            FontInfoUc uc11 = (FontInfoUc)pnlFontInfoBottomView.Controls[11];
+            uc11.ContentChange("none");
+            FontInfoUc uc12 = (FontInfoUc)pnlFontInfoBottomView.Controls[12];
+            uc12.ContentChange("none");
+            FontInfoUc uc13 = (FontInfoUc)pnlFontInfoBottomView.Controls[13];
+            uc13.ContentChange(info.FontFamily);
+            FontInfoUc uc14 = (FontInfoUc)pnlFontInfoBottomView.Controls[14];
+            uc14.ContentChange(info.FullName);
+            FontInfoUc uc15 = (FontInfoUc)pnlFontInfoBottomView.Controls[15];
+            uc15.ContentChange(info.PostscriptName);
+
+            pnlFontInfoBottomView.Refresh();
+            #endregion
         }
 
         private void SetupSupportFontFormat()

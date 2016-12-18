@@ -55,25 +55,25 @@
             this.btnAllFonts = new System.Windows.Forms.Button();
             this.pnlListFont = new System.Windows.Forms.Panel();
             this.pnlShowContent = new System.Windows.Forms.Panel();
+            this.pnlViewFontInfo = new System.Windows.Forms.Panel();
+            this.pnlFontInfoBottomView = new System.Windows.Forms.Panel();
+            this.pnlFontInforTopView = new System.Windows.Forms.Panel();
+            this.lblFontInfoFontStyle = new System.Windows.Forms.Label();
+            this.lblFontInfoTitleFont = new System.Windows.Forms.Label();
+            this.pnlViewSentencesSample = new System.Windows.Forms.Panel();
+            this.trbrEditSizeFontSentencesView = new System.Windows.Forms.TrackBar();
+            this.pnlViewSentencesSampleChild = new System.Windows.Forms.Panel();
+            this.rtxtViewSentencesSample = new System.Windows.Forms.RichTextBox();
+            this.pnlViewAz09Sample = new System.Windows.Forms.Panel();
+            this.trbrEditSizeFontAz09View = new System.Windows.Forms.TrackBar();
+            this.pnlViewAz09SampleChild = new System.Windows.Forms.Panel();
+            this.rtxtViewAz09Sample = new System.Windows.Forms.RichTextBox();
             this.pnlViewGridSample = new System.Windows.Forms.Panel();
             this.trbrEditSizeFontGridSampleView = new System.Windows.Forms.TrackBar();
             this.pnlViewGridSampleChild = new System.Windows.Forms.Panel();
             this.rtxtViewGridSample = new System.Windows.Forms.RichTextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pnlViewSentencesSample = new System.Windows.Forms.Panel();
-            this.trbrEditSizeFontSentencesView = new System.Windows.Forms.TrackBar();
-            this.pnlViewSentencesSampleChild = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.pnlViewAz09Sample = new System.Windows.Forms.Panel();
-            this.trbrEditSizeFontAz09View = new System.Windows.Forms.TrackBar();
-            this.pnlViewAz09SampleChild = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pnlViewFontInfo = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlBorder = new System.Windows.Forms.Panel();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.rtxtViewAz09Sample = new System.Windows.Forms.RichTextBox();
-            this.rtxtViewSentencesSample = new System.Windows.Forms.RichTextBox();
             this.lbFonts = new FontManager.UI.Control.FontListBox();
             this.pnlTitle.SuspendLayout();
             this.tblPnlTitle.SuspendLayout();
@@ -87,16 +87,17 @@
             this.pnlMenu.SuspendLayout();
             this.pnlListFont.SuspendLayout();
             this.pnlShowContent.SuspendLayout();
-            this.pnlViewGridSample.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontGridSampleView)).BeginInit();
-            this.pnlViewGridSampleChild.SuspendLayout();
+            this.pnlViewFontInfo.SuspendLayout();
+            this.pnlFontInforTopView.SuspendLayout();
             this.pnlViewSentencesSample.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontSentencesView)).BeginInit();
             this.pnlViewSentencesSampleChild.SuspendLayout();
             this.pnlViewAz09Sample.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontAz09View)).BeginInit();
             this.pnlViewAz09SampleChild.SuspendLayout();
-            this.pnlViewFontInfo.SuspendLayout();
+            this.pnlViewGridSample.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontGridSampleView)).BeginInit();
+            this.pnlViewGridSampleChild.SuspendLayout();
             this.pnlBorder.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -414,10 +415,10 @@
             // 
             // pnlShowContent
             // 
+            this.pnlShowContent.Controls.Add(this.pnlViewFontInfo);
             this.pnlShowContent.Controls.Add(this.pnlViewSentencesSample);
             this.pnlShowContent.Controls.Add(this.pnlViewAz09Sample);
             this.pnlShowContent.Controls.Add(this.pnlViewGridSample);
-            this.pnlShowContent.Controls.Add(this.pnlViewFontInfo);
             this.pnlShowContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlShowContent.Location = new System.Drawing.Point(472, 0);
             this.pnlShowContent.Margin = new System.Windows.Forms.Padding(0);
@@ -425,11 +426,153 @@
             this.pnlShowContent.Size = new System.Drawing.Size(710, 642);
             this.pnlShowContent.TabIndex = 2;
             // 
+            // pnlViewFontInfo
+            // 
+            this.pnlViewFontInfo.Controls.Add(this.pnlFontInfoBottomView);
+            this.pnlViewFontInfo.Controls.Add(this.pnlFontInforTopView);
+            this.pnlViewFontInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlViewFontInfo.Location = new System.Drawing.Point(0, 0);
+            this.pnlViewFontInfo.Name = "pnlViewFontInfo";
+            this.pnlViewFontInfo.Size = new System.Drawing.Size(710, 642);
+            this.pnlViewFontInfo.TabIndex = 0;
+            // 
+            // pnlFontInfoBottomView
+            // 
+            this.pnlFontInfoBottomView.AutoScroll = true;
+            this.pnlFontInfoBottomView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlFontInfoBottomView.Location = new System.Drawing.Point(0, 79);
+            this.pnlFontInfoBottomView.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlFontInfoBottomView.Name = "pnlFontInfoBottomView";
+            this.pnlFontInfoBottomView.Size = new System.Drawing.Size(710, 563);
+            this.pnlFontInfoBottomView.TabIndex = 2;
+            // 
+            // pnlFontInforTopView
+            // 
+            this.pnlFontInforTopView.Controls.Add(this.lblFontInfoFontStyle);
+            this.pnlFontInforTopView.Controls.Add(this.lblFontInfoTitleFont);
+            this.pnlFontInforTopView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlFontInforTopView.Location = new System.Drawing.Point(0, 0);
+            this.pnlFontInforTopView.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlFontInforTopView.Name = "pnlFontInforTopView";
+            this.pnlFontInforTopView.Size = new System.Drawing.Size(710, 79);
+            this.pnlFontInforTopView.TabIndex = 3;
+            // 
+            // lblFontInfoFontStyle
+            // 
+            this.lblFontInfoFontStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFontInfoFontStyle.AutoSize = true;
+            this.lblFontInfoFontStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFontInfoFontStyle.Location = new System.Drawing.Point(280, 43);
+            this.lblFontInfoFontStyle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFontInfoFontStyle.Name = "lblFontInfoFontStyle";
+            this.lblFontInfoFontStyle.Size = new System.Drawing.Size(120, 29);
+            this.lblFontInfoFontStyle.TabIndex = 1;
+            this.lblFontInfoFontStyle.Text = "Font Style";
+            this.lblFontInfoFontStyle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lblFontInfoTitleFont
+            // 
+            this.lblFontInfoTitleFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFontInfoTitleFont.AutoSize = true;
+            this.lblFontInfoTitleFont.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFontInfoTitleFont.Location = new System.Drawing.Point(267, 7);
+            this.lblFontInfoTitleFont.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFontInfoTitleFont.Name = "lblFontInfoTitleFont";
+            this.lblFontInfoTitleFont.Size = new System.Drawing.Size(160, 36);
+            this.lblFontInfoTitleFont.TabIndex = 0;
+            this.lblFontInfoTitleFont.Text = "Font Name";
+            this.lblFontInfoTitleFont.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // pnlViewSentencesSample
+            // 
+            this.pnlViewSentencesSample.Controls.Add(this.trbrEditSizeFontSentencesView);
+            this.pnlViewSentencesSample.Controls.Add(this.pnlViewSentencesSampleChild);
+            this.pnlViewSentencesSample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlViewSentencesSample.Location = new System.Drawing.Point(0, 0);
+            this.pnlViewSentencesSample.Name = "pnlViewSentencesSample";
+            this.pnlViewSentencesSample.Size = new System.Drawing.Size(710, 642);
+            this.pnlViewSentencesSample.TabIndex = 0;
+            // 
+            // trbrEditSizeFontSentencesView
+            // 
+            this.trbrEditSizeFontSentencesView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.trbrEditSizeFontSentencesView.Location = new System.Drawing.Point(654, 0);
+            this.trbrEditSizeFontSentencesView.Maximum = 6;
+            this.trbrEditSizeFontSentencesView.Minimum = 1;
+            this.trbrEditSizeFontSentencesView.Name = "trbrEditSizeFontSentencesView";
+            this.trbrEditSizeFontSentencesView.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trbrEditSizeFontSentencesView.Size = new System.Drawing.Size(56, 150);
+            this.trbrEditSizeFontSentencesView.TabIndex = 4;
+            this.trbrEditSizeFontSentencesView.Value = 1;
+            // 
+            // pnlViewSentencesSampleChild
+            // 
+            this.pnlViewSentencesSampleChild.Controls.Add(this.rtxtViewSentencesSample);
+            this.pnlViewSentencesSampleChild.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlViewSentencesSampleChild.Location = new System.Drawing.Point(0, 0);
+            this.pnlViewSentencesSampleChild.Name = "pnlViewSentencesSampleChild";
+            this.pnlViewSentencesSampleChild.Padding = new System.Windows.Forms.Padding(56, 0, 56, 0);
+            this.pnlViewSentencesSampleChild.Size = new System.Drawing.Size(710, 642);
+            this.pnlViewSentencesSampleChild.TabIndex = 5;
+            // 
+            // rtxtViewSentencesSample
+            // 
+            this.rtxtViewSentencesSample.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtxtViewSentencesSample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtxtViewSentencesSample.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtxtViewSentencesSample.Location = new System.Drawing.Point(56, 0);
+            this.rtxtViewSentencesSample.Name = "rtxtViewSentencesSample";
+            this.rtxtViewSentencesSample.Size = new System.Drawing.Size(598, 642);
+            this.rtxtViewSentencesSample.TabIndex = 4;
+            this.rtxtViewSentencesSample.Text = resources.GetString("rtxtViewSentencesSample.Text");
+            // 
+            // pnlViewAz09Sample
+            // 
+            this.pnlViewAz09Sample.Controls.Add(this.trbrEditSizeFontAz09View);
+            this.pnlViewAz09Sample.Controls.Add(this.pnlViewAz09SampleChild);
+            this.pnlViewAz09Sample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlViewAz09Sample.Location = new System.Drawing.Point(0, 0);
+            this.pnlViewAz09Sample.Name = "pnlViewAz09Sample";
+            this.pnlViewAz09Sample.Size = new System.Drawing.Size(710, 642);
+            this.pnlViewAz09Sample.TabIndex = 0;
+            // 
+            // trbrEditSizeFontAz09View
+            // 
+            this.trbrEditSizeFontAz09View.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.trbrEditSizeFontAz09View.Location = new System.Drawing.Point(654, 0);
+            this.trbrEditSizeFontAz09View.Maximum = 6;
+            this.trbrEditSizeFontAz09View.Minimum = 1;
+            this.trbrEditSizeFontAz09View.Name = "trbrEditSizeFontAz09View";
+            this.trbrEditSizeFontAz09View.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trbrEditSizeFontAz09View.Size = new System.Drawing.Size(56, 150);
+            this.trbrEditSizeFontAz09View.TabIndex = 2;
+            this.trbrEditSizeFontAz09View.Value = 1;
+            // 
+            // pnlViewAz09SampleChild
+            // 
+            this.pnlViewAz09SampleChild.Controls.Add(this.rtxtViewAz09Sample);
+            this.pnlViewAz09SampleChild.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlViewAz09SampleChild.Location = new System.Drawing.Point(0, 0);
+            this.pnlViewAz09SampleChild.Name = "pnlViewAz09SampleChild";
+            this.pnlViewAz09SampleChild.Padding = new System.Windows.Forms.Padding(56, 0, 56, 0);
+            this.pnlViewAz09SampleChild.Size = new System.Drawing.Size(710, 642);
+            this.pnlViewAz09SampleChild.TabIndex = 6;
+            // 
+            // rtxtViewAz09Sample
+            // 
+            this.rtxtViewAz09Sample.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtxtViewAz09Sample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtxtViewAz09Sample.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtxtViewAz09Sample.Location = new System.Drawing.Point(56, 0);
+            this.rtxtViewAz09Sample.Name = "rtxtViewAz09Sample";
+            this.rtxtViewAz09Sample.Size = new System.Drawing.Size(598, 642);
+            this.rtxtViewAz09Sample.TabIndex = 2;
+            this.rtxtViewAz09Sample.Text = "\n\nABCDEFGHIJKLM\n\nNOPQRSTUVWXYZ\n\nabcdefghijklm\n\nnopqrstuvwxyz\n\n1234567890";
+            // 
             // pnlViewGridSample
             // 
             this.pnlViewGridSample.Controls.Add(this.trbrEditSizeFontGridSampleView);
             this.pnlViewGridSample.Controls.Add(this.pnlViewGridSampleChild);
-            this.pnlViewGridSample.Controls.Add(this.label3);
             this.pnlViewGridSample.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlViewGridSample.Location = new System.Drawing.Point(0, 0);
             this.pnlViewGridSample.Name = "pnlViewGridSample";
@@ -470,117 +613,6 @@
             this.rtxtViewGridSample.TabIndex = 1;
             this.rtxtViewGridSample.Text = "";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(271, 255);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(192, 17);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "text in panel view grid sample";
-            // 
-            // pnlViewSentencesSample
-            // 
-            this.pnlViewSentencesSample.Controls.Add(this.trbrEditSizeFontSentencesView);
-            this.pnlViewSentencesSample.Controls.Add(this.pnlViewSentencesSampleChild);
-            this.pnlViewSentencesSample.Controls.Add(this.label2);
-            this.pnlViewSentencesSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlViewSentencesSample.Location = new System.Drawing.Point(0, 0);
-            this.pnlViewSentencesSample.Name = "pnlViewSentencesSample";
-            this.pnlViewSentencesSample.Size = new System.Drawing.Size(710, 642);
-            this.pnlViewSentencesSample.TabIndex = 0;
-            // 
-            // trbrEditSizeFontSentencesView
-            // 
-            this.trbrEditSizeFontSentencesView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trbrEditSizeFontSentencesView.Location = new System.Drawing.Point(654, 0);
-            this.trbrEditSizeFontSentencesView.Maximum = 6;
-            this.trbrEditSizeFontSentencesView.Minimum = 1;
-            this.trbrEditSizeFontSentencesView.Name = "trbrEditSizeFontSentencesView";
-            this.trbrEditSizeFontSentencesView.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trbrEditSizeFontSentencesView.Size = new System.Drawing.Size(56, 150);
-            this.trbrEditSizeFontSentencesView.TabIndex = 4;
-            this.trbrEditSizeFontSentencesView.Value = 1;
-            // 
-            // pnlViewSentencesSampleChild
-            // 
-            this.pnlViewSentencesSampleChild.Controls.Add(this.rtxtViewSentencesSample);
-            this.pnlViewSentencesSampleChild.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlViewSentencesSampleChild.Location = new System.Drawing.Point(0, 0);
-            this.pnlViewSentencesSampleChild.Name = "pnlViewSentencesSampleChild";
-            this.pnlViewSentencesSampleChild.Padding = new System.Windows.Forms.Padding(56, 0, 56, 0);
-            this.pnlViewSentencesSampleChild.Size = new System.Drawing.Size(710, 642);
-            this.pnlViewSentencesSampleChild.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(271, 328);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(233, 17);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "text in panel view sentences sample";
-            // 
-            // pnlViewAz09Sample
-            // 
-            this.pnlViewAz09Sample.Controls.Add(this.trbrEditSizeFontAz09View);
-            this.pnlViewAz09Sample.Controls.Add(this.pnlViewAz09SampleChild);
-            this.pnlViewAz09Sample.Controls.Add(this.label4);
-            this.pnlViewAz09Sample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlViewAz09Sample.Location = new System.Drawing.Point(0, 0);
-            this.pnlViewAz09Sample.Name = "pnlViewAz09Sample";
-            this.pnlViewAz09Sample.Size = new System.Drawing.Size(710, 642);
-            this.pnlViewAz09Sample.TabIndex = 0;
-            // 
-            // trbrEditSizeFontAz09View
-            // 
-            this.trbrEditSizeFontAz09View.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trbrEditSizeFontAz09View.Location = new System.Drawing.Point(654, 0);
-            this.trbrEditSizeFontAz09View.Maximum = 6;
-            this.trbrEditSizeFontAz09View.Minimum = 1;
-            this.trbrEditSizeFontAz09View.Name = "trbrEditSizeFontAz09View";
-            this.trbrEditSizeFontAz09View.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trbrEditSizeFontAz09View.Size = new System.Drawing.Size(56, 150);
-            this.trbrEditSizeFontAz09View.TabIndex = 2;
-            this.trbrEditSizeFontAz09View.Value = 1;
-            // 
-            // pnlViewAz09SampleChild
-            // 
-            this.pnlViewAz09SampleChild.Controls.Add(this.rtxtViewAz09Sample);
-            this.pnlViewAz09SampleChild.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlViewAz09SampleChild.Location = new System.Drawing.Point(0, 0);
-            this.pnlViewAz09SampleChild.Name = "pnlViewAz09SampleChild";
-            this.pnlViewAz09SampleChild.Padding = new System.Windows.Forms.Padding(56, 0, 56, 0);
-            this.pnlViewAz09SampleChild.Size = new System.Drawing.Size(710, 642);
-            this.pnlViewAz09SampleChild.TabIndex = 6;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(350, 337);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(213, 17);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "text in panel view a-z 0-9 sample";
-            // 
-            // pnlViewFontInfo
-            // 
-            this.pnlViewFontInfo.Controls.Add(this.label1);
-            this.pnlViewFontInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlViewFontInfo.Location = new System.Drawing.Point(0, 0);
-            this.pnlViewFontInfo.Name = "pnlViewFontInfo";
-            this.pnlViewFontInfo.Size = new System.Drawing.Size(710, 642);
-            this.pnlViewFontInfo.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(364, 283);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "text in panel view font info";
-            // 
             // pnlBorder
             // 
             this.pnlBorder.AllowDrop = true;
@@ -593,28 +625,6 @@
             this.pnlBorder.Padding = new System.Windows.Forms.Padding(4);
             this.pnlBorder.Size = new System.Drawing.Size(1190, 690);
             this.pnlBorder.TabIndex = 1;
-            // 
-            // rtxtViewAz09Sample
-            // 
-            this.rtxtViewAz09Sample.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtxtViewAz09Sample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtxtViewAz09Sample.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtxtViewAz09Sample.Location = new System.Drawing.Point(56, 0);
-            this.rtxtViewAz09Sample.Name = "rtxtViewAz09Sample";
-            this.rtxtViewAz09Sample.Size = new System.Drawing.Size(598, 642);
-            this.rtxtViewAz09Sample.TabIndex = 2;
-            this.rtxtViewAz09Sample.Text = "\n\nABCDEFGHIJKLM\n\nNOPQRSTUVWXYZ\n\nabcdefghijklm\n\nnopqrstuvwxyz\n\n1234567890";
-            // 
-            // rtxtViewSentencesSample
-            // 
-            this.rtxtViewSentencesSample.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtxtViewSentencesSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtxtViewSentencesSample.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtxtViewSentencesSample.Location = new System.Drawing.Point(56, 0);
-            this.rtxtViewSentencesSample.Name = "rtxtViewSentencesSample";
-            this.rtxtViewSentencesSample.Size = new System.Drawing.Size(598, 642);
-            this.rtxtViewSentencesSample.TabIndex = 4;
-            this.rtxtViewSentencesSample.Text = resources.GetString("rtxtViewSentencesSample.Text");
             // 
             // lbFonts
             // 
@@ -635,6 +645,7 @@
             this.ClientSize = new System.Drawing.Size(1200, 700);
             this.Controls.Add(this.pnlBorder);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1200, 700);
             this.Name = "frmMain";
             this.Padding = new System.Windows.Forms.Padding(5);
@@ -653,10 +664,9 @@
             this.pnlMenu.ResumeLayout(false);
             this.pnlListFont.ResumeLayout(false);
             this.pnlShowContent.ResumeLayout(false);
-            this.pnlViewGridSample.ResumeLayout(false);
-            this.pnlViewGridSample.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontGridSampleView)).EndInit();
-            this.pnlViewGridSampleChild.ResumeLayout(false);
+            this.pnlViewFontInfo.ResumeLayout(false);
+            this.pnlFontInforTopView.ResumeLayout(false);
+            this.pnlFontInforTopView.PerformLayout();
             this.pnlViewSentencesSample.ResumeLayout(false);
             this.pnlViewSentencesSample.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontSentencesView)).EndInit();
@@ -665,8 +675,10 @@
             this.pnlViewAz09Sample.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontAz09View)).EndInit();
             this.pnlViewAz09SampleChild.ResumeLayout(false);
-            this.pnlViewFontInfo.ResumeLayout(false);
-            this.pnlViewFontInfo.PerformLayout();
+            this.pnlViewGridSample.ResumeLayout(false);
+            this.pnlViewGridSample.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontGridSampleView)).EndInit();
+            this.pnlViewGridSampleChild.ResumeLayout(false);
             this.pnlBorder.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -704,10 +716,6 @@
         private System.Windows.Forms.Panel pnlViewSentencesSample;
         private System.Windows.Forms.Panel pnlViewGridSample;
         private System.Windows.Forms.Panel pnlViewAz09Sample;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar trbrEditSizeFontAz09View;
         private System.Windows.Forms.TrackBar trbrEditSizeFontSentencesView;
         private System.Windows.Forms.Panel pnlViewSentencesSampleChild;
@@ -719,5 +727,9 @@
         private System.Windows.Forms.ToolTip mainToolTip;
         private System.Windows.Forms.RichTextBox rtxtViewAz09Sample;
         private System.Windows.Forms.RichTextBox rtxtViewSentencesSample;
+        private System.Windows.Forms.Panel pnlFontInfoBottomView;
+        private System.Windows.Forms.Panel pnlFontInforTopView;
+        private System.Windows.Forms.Label lblFontInfoFontStyle;
+        private System.Windows.Forms.Label lblFontInfoTitleFont;
     }
 }
