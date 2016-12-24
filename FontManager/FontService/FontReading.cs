@@ -38,6 +38,7 @@ namespace FontManager.FontService
                 fontInfo.FontFamily = face.FamilyName;
                 fontInfo.FontSubFamily = face.StyleName;
                 fontInfo.PostscriptName = face.GetPostscriptName();
+                fontInfo.FullName = Path.GetFileName(fontInfo.Location);
 
                 fontInfo.GlyphCount = face.GlyphCount;
 
