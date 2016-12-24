@@ -155,7 +155,7 @@ namespace FontManager.FontService
                         break;
                     case SearchType.FileName:
                         string fileName = data.Source[i].NameInRegistry;
-                        if (fileName != null && fileName.Contains(fileName))
+                        if (fileName != null && fileName.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
