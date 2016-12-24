@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TestCSharpNghia;
 
 namespace FontManager.Utils
 {
@@ -22,6 +23,17 @@ namespace FontManager.Utils
         public static string DecodeFontValue(string fileName)
         {
             return Regex.Replace(fileName, @"-", "");
+        }
+
+        public static string GetSubsetFontText(List<Subset> subset)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < subset.Count; i++)
+            {
+                builder.Append(subset[i].name + ", ");
+            }
+
+            return builder.ToString();
         }
     }
 }

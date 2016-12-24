@@ -44,17 +44,36 @@ namespace FontManager.FontService
                 this.SearchResult.Clear();
 
             Thread searchThread1 = new Thread(x => SearchInBackground(x));
+            Thread searchThread2 = new Thread(x => SearchInBackground(x));
+
+
+            int midule = dataSource.Count / 2;
+
             searchThread1.Start(new SearchData
             {
-                Source = SharedData.SharedData.FontInfos,
+                Source = dataSource,
                 Start = 0,
-                End = SharedData.SharedData.FontInfos.Count,
+                End = midule,
                 SearchType = searchType,
                 Keyword = keyword
             });
+
+            searchThread2.Start(new SearchData
+            {
+                Source = dataSource,
+                Start = midule + 1,
+                End = dataSource.Count,
+                SearchType = searchType,
+                Keyword = keyword
+            });
+
+
         }
 
 
+        int n_thread = 2;
+
+        FinishData finishedData = new FinishData();
         private void SearchInBackground(object dataSearch)
         {
             SearchData data = dataSearch as SearchData;
@@ -64,17 +83,64 @@ namespace FontManager.FontService
                 switch (data.SearchType)
                 {
                     case SearchType.All:
+                        string copyRightA = data.Source[i].StringLanguageSupported;
+                        if (copyRightA != data.Source[i].Copyright && copyRightA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
+
+                        string designerA = data.Source[i].Designer;
+                        if (designerA != null && designerA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
+
+                        string familyA = data.Source[i].FontFamily;
+                        if (familyA != null && familyA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
+
+                        string fileNameA = data.Source[i].NameInRegistry;
+                        if (fileNameA != null && fileNameA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
+
+                        string langA = data.Source[i].StringLanguageSupported;
+                        if (langA != null && langA.Contains(data.Keyword))
+                            this.SearchResult.Add(data.Source[i]);
+                       
+
+                        string manufactuerA = data.Source[i].Manufacturer;
+                        if (manufactuerA != null && manufactuerA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
+
+                        string postscriptA = data.Source[i].PostscriptName;
+                        if (postscriptA != null && postscriptA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
+
+                        string styleA = data.Source[i].FontSubFamily;
+                        if (styleA != null && styleA.Contains(data.Keyword))
+                        {
+                            this.SearchResult.Add(data.Source[i]);
+                        }
                         break;
+
                     case SearchType.Copyright:
                         string copyRight = data.Source[i].StringLanguageSupported;
-                        if(copyRight != data.Source[i].Copyright && copyRight.Contains(data.Keyword))
+                        if (copyRight != data.Source[i].Copyright && copyRight.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
                         break;
                     case SearchType.Designer:
                         string designer = data.Source[i].Designer;
-                        if(designer != null && designer.Contains(data.Keyword))
+                        if (designer != null && designer.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
@@ -82,14 +148,14 @@ namespace FontManager.FontService
 
                     case SearchType.Family:
                         string family = data.Source[i].FontFamily;
-                        if(family != null && family.Contains(data.Keyword))
+                        if (family != null && family.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
                         break;
                     case SearchType.FileName:
                         string fileName = data.Source[i].NameInRegistry;
-                        if(fileName != null && fileName.Contains(fileName))
+                        if (fileName != null && fileName.Contains(fileName))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
@@ -101,34 +167,54 @@ namespace FontManager.FontService
                         break;
                     case SearchType.Manufactuer:
                         string manufactuer = data.Source[i].Manufacturer;
-                        if(manufactuer != null && manufactuer.Contains(data.Keyword))
+                        if (manufactuer != null && manufactuer.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
                         break;
                     case SearchType.PostScript:
                         string postscript = data.Source[i].PostscriptName;
-                        if(postscript != null && postscript.Contains(data.Keyword))
+                        if (postscript != null && postscript.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
                         break;
                     case SearchType.Style:
                         string style = data.Source[i].FontSubFamily;
-                        if(style != null && style.Contains(data.Keyword))
+                        if (style != null && style.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
                         break;
-                    
                     default:
                         break;
                 }
             }
 
-            if (ListenerSearchFinished != null)
+            lock (finishedData)
             {
-                ListenerSearchFinished(this, new SearchFinishedEventArgs(this.SearchResult));
+                finishedData.FinisedTask++;
+                if(finishedData.FinisedTask == n_thread)
+                {
+                    finishedData.FinisedTask = 0;
+                    if (ListenerSearchFinished != null)
+                    {
+                        ListenerSearchFinished(this, new SearchFinishedEventArgs(this.SearchResult));
+                    }
+                }
+                
+            }
+           
+        }
+
+
+        public class FinishData
+        {
+            public int FinisedTask { get; set; }
+
+            public FinishData()
+            {
+                FinisedTask = 0;
             }
         }
 

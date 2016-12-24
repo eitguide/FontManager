@@ -27,8 +27,9 @@ namespace FontManager
             }
             else
             {
-                Application.Run(new TestActiveFont());
+                Application.Run(new MainForm());
             }
+
         }
     }
 }

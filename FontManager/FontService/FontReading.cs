@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestCSharpNghia;
 
 namespace FontManager.FontService
 {
@@ -25,14 +26,13 @@ namespace FontManager.FontService
             if (string.IsNullOrEmpty(filePath))
                 return null;
 
-            try {
+            try
+            {
                 Face face = new Face(this.lib, filePath);
 
                 //Logger.CodeIdsFont(face);
-
                 if (face == null)
                     return null;
-
 
                 fontInfo.Location = filePath;
                 fontInfo.FontFamily = face.FamilyName;
@@ -40,6 +40,26 @@ namespace FontManager.FontService
                 fontInfo.PostscriptName = face.GetPostscriptName();
 
                 fontInfo.GlyphCount = face.GlyphCount;
+
+                //Find subset of a font
+                if (SharedData.SharedData.IsSubsetsLoaded)
+                {
+                    for (int i = 0; i < SharedData.SharedData.Subsets.Count; i++)
+                    {
+                        Subset item = SharedData.SharedData.Subsets[i];
+                        int start = int.Parse(item.start, System.Globalization.NumberStyles.HexNumber);
+                        int end = int.Parse(item.end, System.Globalization.NumberStyles.HexNumber);
+                        
+                       for(int index = start; index <= end; index++)
+                        {
+                            if(face.GetCharIndex((uint)index) != 0)
+                            {
+                                fontInfo.Subsets.Add(item);
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0; i < face.CharmapsCount; i++)
@@ -63,15 +83,33 @@ namespace FontManager.FontService
                 int count = (int)face.GetSfntNameCount();
                 int curentNameIndex = -1;
                 // Utils.Logger.CodeIdsFont(face);
-                fontInfo.LanguageSupported = GetLanguageSupport(face);
+                //fontInfo.LanguageSupported = GetLanguageSupport(face);
+                //fontInfo.StringLanguageSupported = string.Join(", ", fontInfo.LanguageSupported.ToArray());
 
-                fontInfo.StringLanguageSupported = string.Join(", ", fontInfo.LanguageSupported.ToArray());
 
+                #region Read Font Info
+                StringBuilder languageBuilder = new StringBuilder();
+
+                int currentLanguageId = -1;
                 for (int i = 0; i < count; i++)
                 {
                     SfntName sfnt = face.GetSfntName((uint)i);
+
+                    if (sfnt.PlatformId == PlatformId.Microsoft && currentLanguageId != sfnt.LanguageId)
+                    {
+                        currentLanguageId = sfnt.LanguageId;
+                        LanguageMapping mapping = (LanguageMapping)sfnt.LanguageId;
+                        String lang = TextUtils.GetLanguageFromConstant(mapping.ToString());
+                        if (lang != string.Empty)
+                        {
+                            languageBuilder.Append(lang + ", ");
+                        }
+                    }
+
                     if (sfnt.PlatformId == PlatformId.Macintosh)
                     {
+                        
+
                         if (sfnt.NameId < curentNameIndex)
                             break;
 
@@ -138,7 +176,13 @@ namespace FontManager.FontService
                     }
                 }
 
-            }catch(Exception ex)
+                #endregion
+
+               //languageBuilder.Remove(languageBuilder.Length - 1, 1);
+               fontInfo.StringLanguageSupported = languageBuilder.ToString();
+
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -156,13 +200,13 @@ namespace FontManager.FontService
             for (int i = 0; i < count; i++)
             {
                 SfntName sfnt = face.GetSfntName((uint)i);
-                
+
                 if (sfnt.PlatformId == PlatformId.Microsoft && currentLanguageId != sfnt.LanguageId)
                 {
                     currentLanguageId = sfnt.LanguageId;
                     LanguageMapping mapping = (LanguageMapping)sfnt.LanguageId;
                     String lang = TextUtils.GetLanguageFromConstant(mapping.ToString());
-                    if(lang != string.Empty)
+                    if (lang != string.Empty)
                     {
                         listLangSupported.Add(lang);
                     }

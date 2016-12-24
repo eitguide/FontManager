@@ -1,6 +1,7 @@
 ﻿using FontManager.Model;
 using FontManager.Utils;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,6 +55,7 @@ namespace FontManager.FontService
                     info.NameInRegistry = fontNames[i];
                     info.FileNameInRegistry = name as string;
                     info.Disable = false;
+                    info.Owner = FontOwner.System;
                     infos.Add(info);
                 }
             }
@@ -61,18 +63,26 @@ namespace FontManager.FontService
             return infos;
         }
 
+        public List<FontInfo> GetListFontUserFromFile()
+        {
+            string content = String.Empty;
+            string path = Path.Combine(fileManager.GetCachedFolderProject(), "Cached.txt");
+
+            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    content = reader.ReadToEnd();
+                }
+            }
+
+            List<FontInfo> info = JsonConvert.DeserializeObject<List<FontInfo>>(content);
+            return info;
+        }
+
         private bool CheckSupportFormat(string filename, FontFormatCollection formatCollectioin)
         {
             string extension = Path.GetExtension(filename);
-            //if(extension == ".fon")
-            //{
-            //    Console.WriteLine(filename);
-            //}
-
-            //if(filename == "COURE.FON")
-            //{
-            //    int debug = 9;
-            //}
             return formatCollectioin.ContainsExt(extension);
         }
 
@@ -81,10 +91,8 @@ namespace FontManager.FontService
 
             List<String> fontNames = GetListFontNameInstalled();
 
-
             if (fontNames == null || fontNames.Count == 0)
                 return null;
-
 
             for (int i = 0; i < fontNames.Count; i++)
             {
@@ -134,8 +142,8 @@ namespace FontManager.FontService
 
             bool exits = File.Exists(destinationFontFile);
 
-            if (exits || CheckFontIntalledInRegistry(fileNoExtentsion, fileName))
-                return InstallError.INSTALL_DUPLICATE;
+            //if (exits || CheckFontIntalledInRegistry(fileNoExtentsion, fileName))
+            //    return InstallError.INSTALL_DUPLICATE;
 
             fileManager.CopyFileTo(filepath, fontFolderSystem);
             this.registryKey.SetValue(fileNoExtentsion, fileName);
@@ -174,8 +182,29 @@ namespace FontManager.FontService
 
             this.registryKey.DeleteValue(nameInRegistry);
 
+            // fileManager.CopyFileTo(destinationFontFile, disableFontPath);
 
-            fileManager.MoveFile(destinationFontFile, disableFontPath);
+            fileManager.DeleteFile(destinationFontFile);
+        }
+
+
+        public bool DisableFont(FontInfo info)
+        {
+          
+            string destinationFontFile = info.Location;
+
+            string key = info.NameInRegistry;
+
+            string disableFontPath = Path.Combine(fileManager.GetFontsFolderProject(), "Disable");
+
+            if (!File.Exists(destinationFontFile))
+                return false;
+
+            fileManager.CopyFileTo(info.Location, fileManager.GetDisableFontProject());
+            this.registryKey.DeleteValue(key);
+
+            return true;
+           
         }
 
     }

@@ -4,6 +4,8 @@ using FontManager.Model;
 using FontManager.Properties;
 using FontManager.UI.Control;
 using FontManager.Utils;
+using Newtonsoft.Json;
+using SharpFont;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +17,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using TestCSharpNghia;
 
 namespace FontManager.UI
 {
@@ -32,21 +36,22 @@ namespace FontManager.UI
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         #endregion
 
-        public event SearchtypeHandler listenter;
-
         #region PhucTV variable
         private enum MenuItem { AllFont, SystemFont, UserFont }
         private const int FORM_PADDING = 5;
         private const int FORM_BORDER_THICKNESS = 2;
-        private Color RADIO_BTN_SELECTED_COLOR = ColorHelper.ConvertToARGB("#b1bcbd");
-        private Color MENU_ITEM_SELECTED_COLOR = ColorHelper.ConvertToARGB("#518F9E");
-        private Color TITLE_COLOR = ColorHelper.ConvertToARGB("#939e9f");
+        private Color FORM_BORDER_COLOR = ColorHelper.ConvertToARGB("#9ca7a8");             // old version is #7f8c8d
+        private Color TITLE_COLOR = ColorHelper.ConvertToARGB("#d4d2d5");                   // old version is #939e9f
+        private Color MENU_BACKGROUND_COLOR = ColorHelper.ConvertToARGB("#ededed");         // old version is #D6D6D6
+        private Color LIST_FONT_BACKGROUND_COLOR = ColorHelper.ConvertToARGB("#ffffff");    // old version is #bdc3c7
+        private Color BODY_VIEW_FONT_CONTENT_COLOR = ColorHelper.ConvertToARGB("#ffffff");  // old version is #ecf0f1
+        private Color RADIO_BTN_SELECTED_COLOR = ColorHelper.ConvertToARGB("#bababa");      // old version is #b1bcbd
+        private Color SEARCH_BOX_BACKGROUND_COLOR = ColorHelper.ConvertToARGB("#ededed");   // old version is #9da8a9
         private ContextMenuStrip cmSearchType = new ContextMenuStrip();
         private ContextMenu cmFontItem = new ContextMenu();
         private MenuItem selectedMenuItem;
         private FontFamily defaultFontFamilyViewSample = new FontFamily("Arial");
         private string selectedFontPath = null;
-
         #endregion
 
         #region NghiaVN Variable
@@ -54,6 +59,20 @@ namespace FontManager.UI
         private FontReading fontReading;
         private FontInstallation fontInstallation;
         private FileManager fileManager;
+        private FontInfo currentFontSelected;
+        private SearchType currentSearchType = SearchType.All;
+        private SearchEngine searchEngine;
+        private string keyWord;
+        public event SearchtypeHandler listenter;
+        private event LoadBackgroundSuccessHandler loadDataBackLoadListener;
+        private const int NUMBER_THREAD_LOAD_BACKGROUND = 2;
+        private Board.Board mBoard;
+        private FontService.FontService mFontService;
+        private int mRows;
+        private Label[,] CharactersLabel;
+        private List<int> CharacterIndex = new List<int>();
+
+      
 
         #endregion
 
@@ -61,6 +80,7 @@ namespace FontManager.UI
         {
             InitializeComponent();
             Load += FrmMain_Load;
+            Logger.Debug = true;
 
             // Them callback cho viec Keo' di chuyen form
             #region
@@ -71,19 +91,20 @@ namespace FontManager.UI
             listenter += SearchTypeClicked_listenter;
             #endregion
 
+
             // Set mau sac cho cac thanh phan cua form
             #region
-            SetFormBorderColor(ColorHelper.ConvertToARGB("#7f8c8d"));
+            SetFormBorderColor(FORM_BORDER_COLOR);
             pnlTitle.BackColor = TITLE_COLOR;
-            pnlMenu.BackColor = ColorHelper.ConvertToARGB("#D6D6D6");
-            pnlListFont.BackColor = ColorHelper.ConvertToARGB("#bdc3c7");
-            pnlShowContent.BackColor = ColorHelper.ConvertToARGB("#ecf0f1");
-            pnlSearchBox.BackColor = ColorHelper.ConvertToARGB("#9da8a9");
-            txtSearchBox.BackColor = ColorHelper.ConvertToARGB("#9da8a9");
+            pnlMenu.BackColor = MENU_BACKGROUND_COLOR;
+            pnlListFont.BackColor = LIST_FONT_BACKGROUND_COLOR;
+            pnlShowContent.BackColor = BODY_VIEW_FONT_CONTENT_COLOR;
+            pnlSearchBox.BackColor = SEARCH_BOX_BACKGROUND_COLOR;
+            txtSearchBox.BackColor = SEARCH_BOX_BACKGROUND_COLOR;
             btnViewAz09Sample.PerformClick();
-            rtxtViewAz09Sample.BackColor = ColorHelper.ConvertToARGB("#ecf0f1");
-            rtxtViewSentencesSample.BackColor = ColorHelper.ConvertToARGB("#ecf0f1");
-            rtxtViewGridSample.BackColor = ColorHelper.ConvertToARGB("#ecf0f1");
+            rtxtViewAz09Sample.BackColor = BODY_VIEW_FONT_CONTENT_COLOR;
+            rtxtViewSentencesSample.BackColor = BODY_VIEW_FONT_CONTENT_COLOR;
+           // rtxtViewGridSample.BackColor = BODY_VIEW_FONT_CONTENT_COLOR;
             #endregion
 
             // Cac su kien cua cac control
@@ -134,12 +155,12 @@ namespace FontManager.UI
             selectedMenuItem = MenuItem.AllFont;
 
             // Khoi tao cac ky tu cho Grid Sample
-            char c = '!'; int count = 1;
-            do
-            {
-                rtxtViewGridSample.Text += "\t" + c++;
-                count++;
-            } while (count != 271);
+            //char c = '!'; int count = 1;
+            //do
+            //{
+            //    rtxtViewGridSample.Text += "\t" + c++;
+            //    count++;
+            //} while (count != 271);
 
             rtxtViewAz09Sample.SelectAll();
             rtxtViewAz09Sample.SelectionAlignment = HorizontalAlignment.Center;
@@ -165,6 +186,7 @@ namespace FontManager.UI
             FontInfoUc uc13 = new FontInfoUc("TradeMark", "none");
             FontInfoUc uc14 = new FontInfoUc("License", "none");
             FontInfoUc uc15 = new FontInfoUc("GlyphCount", "none");
+
 
             pnlFontInfoBottomView.Controls.Add(uc15);
             uc15.Dock = DockStyle.Top;
@@ -198,6 +220,10 @@ namespace FontManager.UI
             uc1.Dock = DockStyle.Top;
             pnlFontInfoBottomView.Controls.Add(uc);
             uc.Dock = DockStyle.Top;
+            FontInfoUc uc16 = new FontInfoUc("Subset Font", "none");
+
+            pnlFontInfoBottomView.Controls.Add(uc16);
+            uc16.Dock = DockStyle.Top;
             #endregion
         }
 
@@ -208,25 +234,51 @@ namespace FontManager.UI
             fontManager = FontManager.Manager.FontManager.GetInstance();
             fontInstallation = new FontInstallation();
 
-
             fontReading = new FontReading();
             fontInstallation = new FontInstallation();
             fontManager = FontManager.Manager.FontManager.GetInstance();
             fileManager = FileManager.GetInstance();
+            searchEngine = new SearchEngine();
+
+            mBoard = new Board.Board();
+            mFontService = new FontService.FontService();
+
+    
+            
 
             lbFonts.SelectedIndex = -1;
 
             //setup font support
             SetupSupportFontFormat();
 
-            SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
-            lbFonts.DataSource = SharedData.SharedData.FontInfos;
+            //Load Subset Data from file
+            if (!SharedData.SharedData.IsSubsetsLoaded)
+                FileManager.LoadSubsetDataFromFile();
 
+            //SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
+            //lbFonts.DataSource = SharedData.SharedData.FontInfos;
 
-            SharedData.SharedData.FontInfos.ForEach(i => Logger.d(i.FileNameInRegistry + ", "));
             lbFonts.SelectedIndexChanged += lbFonts_SelectedIndexChanged;
+            pnlDrawCharacter.Paint += PnlDrawCharacter_Paint;
+            pnlDrawCharacter.SizeChanged += PnlDrawCharacter_SizeChanged;
+            
+            //Load Font Data
+            if (FontManager.Properties.Settings.Default.FirstLanch == true)
+            {
+                Logger.d("Load data background");
+                loadDataBackLoadListener += FrmMain_loadDataBackLoadListener;
+                LoadDataBackground();
+                FontManager.Properties.Settings.Default.FirstLanch = false;
+                FontManager.Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Logger.d("Load data from file cached");
+                SharedData.SharedData.FontInfos = fileManager.GetFontDataCached();
+                lbFonts.DataSource = SharedData.SharedData.FontInfos;
+            }
 
-            lbFonts.BackColor = ColorHelper.ConvertToARGB("#95a5a6");
+            cbSubsetFont.SelectedIndexChanged += CbSubsetFont_SelectedIndexChanged;
             #endregion
 
             #region Tamphu.pn
@@ -241,34 +293,185 @@ namespace FontManager.UI
             #endregion Tamphu.pn
         }
 
+        private void PnlDrawCharacter_SizeChanged(object sender, EventArgs e)
+        {
+           Logger.d("On changed");
+           if(mBoard != null)
+            {
+                mBoard.SetData((float)pnlDrawCharacter.Width - 1, (float)pnlDrawCharacter.Height, mBoard.Column, mBoard.Row);
+                //Update location for Character Lable
+                if(CharactersLabel != null)
+                {
+                    for (int i = 0; i < mBoard.Row; i++)
+                    {
+                        for (int j = 0; j < mBoard.Column; j++)
+                        {
+                            try {
+                                CharactersLabel[i, j].Location = new Point((int)(j * mBoard.ItemWidth) + 1, (int)(i * mBoard.ItemHeight) + 1);
+                                CharactersLabel[i, j].Size = new Size((int)mBoard.ItemWidth - 2, (int)mBoard.ItemWidth - 2);
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void PnlDrawCharacter_Paint(object sender, PaintEventArgs e)
+        {
+            Logger.d("Panel Charactor OnPaint");
+            if (mBoard != null)
+            {
+                HandleDrawCharacter();
+            }
+        }
+
+        public void UpdateCharacter()
+        {
+
+        }
+
+        private void HandleDrawCharacter()
+        {
+            pnlDrawCharacter.CreateGraphics().Clear(Color.White);
+            mBoard.Draw(pnlDrawCharacter.CreateGraphics(), pnlDrawCharacter);
+        }
+
+        //Subset Index Changed
+        private void CbSubsetFont_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = cbSubsetFont.SelectedIndex;
+            Logger.d("Index Selected: " + index);
+
+
+            if (index >= 0)
+            {
+                Subset currentSubset = currentFontSelected.Subsets[index];
+                // pnlViewGridSample.BackColor = Color.Green;
+                //pnlViewGridSampleChild.BackColor = Color.Red;
+                //pnlDrawCharacter.BackColor = Color.Red;
+                float widthPanel = pnlDrawCharacter.Width;
+                float heightPanel = pnlDrawCharacter.Height;
+                mFontService.SetFont(currentFontSelected.Location);
+                mFontService.SetSize(10);
+
+                Face face = mFontService.FontFace;
+
+                int start = int.Parse(currentSubset.start, System.Globalization.NumberStyles.HexNumber);
+                int end = int.Parse(currentSubset.end, System.Globalization.NumberStyles.HexNumber);
+
+                //count font visible in subset
+
+                
+                CharacterIndex.Clear();
+
+                for (int i = start; i < end; i++)
+                {
+                    if (face.GetCharIndex((uint)i) != 0)
+                    {
+                        CharacterIndex.Add(i);
+                    }
+                }
+
+                
+                int row = (int)Math.Ceiling((decimal)CharacterIndex.Count / (decimal)15);
+                this.mRows = row;
+                Logger.d("Row: " + this.mRows);
+
+                mBoard.SetData(pnlDrawCharacter.Width - 1, pnlDrawCharacter.Height, 15, this.mRows);
+                CharactersLabel = new Label[mBoard.Row, mBoard.Column];
+
+                pnlDrawCharacter.Controls.Clear();
+
+                for (int i = 0; i < mBoard.Row; i++)
+                {
+                    for (int j = 0; j < mBoard.Column; j++)
+                    {
+                        CharactersLabel[i, j] = new Label();
+                        CharactersLabel[i, j].ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                        CharactersLabel[i, j].TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                        CharactersLabel[i, j].Size = new Size((int)mBoard.ItemWidth - 2, (int)mBoard.ItemHeight - 2);
+                        CharactersLabel[i, j].Location = new Point((int)(j * mBoard.ItemWidth) + 1, (int)(i * mBoard.ItemWidth) + 1);
+                    }
+                }
+
+                mFontService.SetSize((int)(0.6f * mBoard.ItemHeight));
+
+                int currentRow = 0;
+                int currentColumn = 0;
+
+                for(int i = 0; i < CharacterIndex.Count; i++)
+                {
+                    if(currentColumn >= mBoard.Column)
+                    {
+                        currentColumn = 0;
+                        currentRow++;
+                    }
+
+                    Bitmap bitmap = mFontService.RenderCharacterCode((uint)CharacterIndex[i]);
+                    CharactersLabel[currentRow, currentColumn].Image = bitmap;
+                    pnlDrawCharacter.Controls.Add(CharactersLabel[currentRow, currentColumn]);
+                    currentColumn++;
+                    
+                }
+
+                currentRow = 0;
+                currentColumn = 0;
+
+                HandleDrawCharacter();
+            
+            }
+
+        }
+
+        private void FrmMain_loadDataBackLoadListener(object sender, LoadBackgroundSuccessArgs e)
+        {
+            //this.isLoadedBackground = true;
+            //SharedData.SharedData.FontInfos[10].Disable = true;
+
+            //SharedData.SharedData.FontAdded = fontInstallation.GetListFontUserFromFile();
+            //if (SharedData.SharedData.FontAdded != null)
+            //{
+            //    Logger.d("UserCached: " + SharedData.SharedData.FontAdded.Count);
+            //    SharedData.SharedData.FontInfos.AddRange(SharedData.SharedData.FontAdded);
+            //    lbFonts.Invoke(new Action(() => { lbFonts.DataSource = null; lbFonts.DataSource = SharedData.SharedData.FontInfos; }));
+            //}
+        }
+
         private void lbFonts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            #region Tamphu.pn
-            if (lbFonts.SelectedItem == null) return;
-            #endregion
+            if (lbFonts.SelectedItem == null)
+                return;
 
-            FontInfo info = lbFonts.SelectedItem as FontInfo;
-            Logger.d(info == null ? "" : info.NameInRegistry);
+            currentFontSelected = lbFonts.SelectedItem as FontInfo;
+            if (!currentFontSelected.Loaded)
+            {
+                fontReading.ReadingFontInfo(Path.Combine(fileManager.GetFontsSystemFolder(), currentFontSelected.FileNameInRegistry), ref currentFontSelected);
+            }
 
-            string filePath = Path.Combine(fileManager.GetFontsSystemFolder(), info.FileNameInRegistry);
-            fontReading.ReadingFontInfo(filePath, ref info);
-            Logger.FontInfomation(info);
+            //Logger.FontInfomation(currentFontSelected);
+            selectedFontPath = currentFontSelected.Location;
 
-            selectedFontPath = filePath;
-
-            FontFamily ff = GetFontFamilyFromLocation(filePath);
+            FontFamily ff = GetFontFamilyFromLocation(selectedFontPath);
             FontStyle fs = FontStyle.Regular;
-            if (info.FontSubFamily == FontStyle.Bold.ToString())
+            if (currentFontSelected.FontSubFamily == FontStyle.Bold.ToString())
                 fs = FontStyle.Bold;
-            else if (info.FontSubFamily == FontStyle.Italic.ToString())
+            else if (currentFontSelected.FontSubFamily == FontStyle.Italic.ToString())
                 fs = FontStyle.Italic;
-            else if (info.FontSubFamily == FontStyle.Regular.ToString())
+            else if (currentFontSelected.FontSubFamily == FontStyle.Regular.ToString())
                 fs = FontStyle.Regular;
-            else if (info.FontSubFamily == FontStyle.Strikeout.ToString())
+            else if (currentFontSelected.FontSubFamily == FontStyle.Strikeout.ToString())
                 fs = FontStyle.Strikeout;
-            else if (info.FontSubFamily == FontStyle.Underline.ToString())
+            else if (currentFontSelected.FontSubFamily == FontStyle.Underline.ToString())
                 fs = FontStyle.Underline;
+
+            cbSubsetFont.DataSource = currentFontSelected.Subsets.Select(x => x.name).ToList();
             // Cai font hien thi cho A-z 0-9 sample
+
+
             if (ff == null)
                 rtxtViewAz09Sample.Font = new Font(defaultFontFamilyViewSample, rtxtViewAz09Sample.Font.Size);
             else
@@ -281,15 +484,15 @@ namespace FontManager.UI
                 rtxtViewSentencesSample.Font = new Font(ff, rtxtViewSentencesSample.Font.Size, fs);
 
             // Cai font hien thi cho Grid sample
-            if (ff == null)
-                rtxtViewGridSample.Font = new Font(defaultFontFamilyViewSample, rtxtViewGridSample.Font.Size);
-            else
-                rtxtViewGridSample.Font = new Font(ff, rtxtViewGridSample.Font.Size, fs);
+            //if (ff == null)
+            //    rtxtViewGridSample.Font = new Font(defaultFontFamilyViewSample, rtxtViewGridSample.Font.Size);
+            //else
+            //    rtxtViewGridSample.Font = new Font(ff, rtxtViewGridSample.Font.Size, fs);
 
             // Gan thong tin font cho panel font info
             #region Tamphu.pn
 
-            lblFontInfoTitleFont.Text = lblFontInfoFontStyle.Text = info.FullName;
+            lblFontInfoTitleFont.Text = lblFontInfoFontStyle.Text = currentFontSelected.FullName;
             if (ff == null)
             {
                 lblFontInfoTitleFont.Font = new Font(defaultFontFamilyViewSample, 18);
@@ -301,55 +504,41 @@ namespace FontManager.UI
                 lblFontInfoFontStyle.Font = new Font(defaultFontFamilyViewSample, 18);
             }
 
-
-
-            string resultLanguage = String.Empty;
-            try
-            {
-                resultLanguage = info.LanguageSupported[0];
-                for (int i = 1; i < info.LanguageSupported.Count; i++)
-                {
-                    resultLanguage += ", " + info.LanguageSupported[i];
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
             FontInfoUc uc = (FontInfoUc)pnlFontInfoBottomView.Controls[0];
-            uc.ContentChange(info.GlyphCount.ToString());
+            uc.ContentChange(currentFontSelected.GlyphCount.ToString());
             FontInfoUc uc1 = (FontInfoUc)pnlFontInfoBottomView.Controls[1];
-            uc1.ContentChange(info.License);
+            uc1.ContentChange(currentFontSelected.License);
             FontInfoUc uc2 = (FontInfoUc)pnlFontInfoBottomView.Controls[2];
-            uc2.ContentChange(info.TradeMark);
+            uc2.ContentChange(currentFontSelected.TradeMark);
             FontInfoUc uc3 = (FontInfoUc)pnlFontInfoBottomView.Controls[3];
-            uc3.ContentChange(info.Copyright);
+            uc3.ContentChange(currentFontSelected.Copyright);
             FontInfoUc uc4 = (FontInfoUc)pnlFontInfoBottomView.Controls[4];
-            uc4.ContentChange(info.Designer);
+            uc4.ContentChange(currentFontSelected.Designer);
             FontInfoUc uc5 = (FontInfoUc)pnlFontInfoBottomView.Controls[5];
-            uc5.ContentChange(info.Manufacturer);
+            uc5.ContentChange(currentFontSelected.Manufacturer);
             FontInfoUc uc6 = (FontInfoUc)pnlFontInfoBottomView.Controls[6];
-            uc6.ContentChange(info.UniqueId);
+            uc6.ContentChange(currentFontSelected.UniqueId);
             FontInfoUc uc7 = (FontInfoUc)pnlFontInfoBottomView.Controls[7];
-            uc7.ContentChange(info.Location);
+            uc7.ContentChange(currentFontSelected.Location);
             FontInfoUc uc8 = (FontInfoUc)pnlFontInfoBottomView.Controls[8];
-            uc8.ContentChange(info.Version);
+            uc8.ContentChange(currentFontSelected.Version);
             FontInfoUc uc9 = (FontInfoUc)pnlFontInfoBottomView.Controls[9];
-            uc9.ContentChange(info.FontSubFamily);
+            uc9.ContentChange("none");
             FontInfoUc uc10 = (FontInfoUc)pnlFontInfoBottomView.Controls[10];
-            uc10.ContentChange(resultLanguage);
+            uc10.ContentChange(currentFontSelected.StringLanguageSupported);
             FontInfoUc uc11 = (FontInfoUc)pnlFontInfoBottomView.Controls[11];
             uc11.ContentChange("none");
             FontInfoUc uc12 = (FontInfoUc)pnlFontInfoBottomView.Controls[12];
-            uc12.ContentChange("none");
+            uc12.ContentChange(currentFontSelected.FontSubFamily);
             FontInfoUc uc13 = (FontInfoUc)pnlFontInfoBottomView.Controls[13];
-            uc13.ContentChange(info.FontFamily);
+            uc13.ContentChange(currentFontSelected.FontFamily);
             FontInfoUc uc14 = (FontInfoUc)pnlFontInfoBottomView.Controls[14];
-            uc14.ContentChange(info.FullName);
+            uc14.ContentChange(currentFontSelected.FullName);
             FontInfoUc uc15 = (FontInfoUc)pnlFontInfoBottomView.Controls[15];
-            uc15.ContentChange(info.PostscriptName);
+            uc15.ContentChange(currentFontSelected.PostscriptName);
 
+            FontInfoUc uc16 = (FontInfoUc)pnlFontInfoBottomView.Controls[16];
+            uc16.ContentChange(Utils.TextUtils.GetSubsetFontText(currentFontSelected.Subsets));
             pnlFontInfoBottomView.Refresh();
             #endregion
         }
@@ -367,7 +556,10 @@ namespace FontManager.UI
 
             PrivateFontCollection pfc = new PrivateFontCollection();
             pfc.AddFontFile(pathFont);
+
+
             return pfc.Families.Length > 0 ? pfc.Families[0] : null;
+
         }
 
         private void TrbrEditSizeFontAz09View_Scroll(object sender, EventArgs e)
@@ -424,24 +616,24 @@ namespace FontManager.UI
         {
             switch (trbrEditSizeFontGridSampleView.Value)
             {
-                case 1:
-                    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 14);
-                    break;
-                case 2:
-                    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 15);
-                    break;
-                case 3:
-                    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 17);
-                    break;
-                case 4:
-                    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 20);
-                    break;
-                case 5:
-                    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 24);
-                    break;
-                case 6:
-                    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 29);
-                    break;
+                //case 1:
+                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 14);
+                //    break;
+                //case 2:
+                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 15);
+                //    break;
+                //case 3:
+                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 17);
+                //    break;
+                //case 4:
+                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 20);
+                //    break;
+                //case 5:
+                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 24);
+                //    break;
+                //case 6:
+                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 29);
+                //    break;
             }
         }
 
@@ -506,8 +698,13 @@ namespace FontManager.UI
 
         private void BtnClose_Click(object sender, EventArgs e)
         {
+            if (FontManager.Properties.Settings.Default.FirstLanch || SharedData.SharedData.DataChanged)
+            {
+                fileManager.SaveFontData(SharedData.SharedData.FontInfos);
+            }
             this.Close();
         }
+
 
         private void FrmMain_SizeChanged(object sender, EventArgs e)
         {
@@ -698,7 +895,9 @@ namespace FontManager.UI
         private void BtnAddFonts_Click(object sender, EventArgs e)
         {
             // Lay danh sach file da chon
-            List<string> filesSeletedPath;
+            List<FontInfo> listFontAdd = new List<FontInfo>();
+
+            List<string> filesSeletedPath = null;
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Multiselect = true;
             DialogResult dr = ofd.ShowDialog();
@@ -712,25 +911,80 @@ namespace FontManager.UI
                 }
             }
 
+            if (filesSeletedPath != null && filesSeletedPath.Count > 0)
+            {
+                for (int i = 0; i < filesSeletedPath.Count; i++)
+                {
+                    FontInfo fontInfo = new FontInfo();
+                    fontInfo.NameInRegistry = Path.GetFileNameWithoutExtension(filesSeletedPath[i]);
+                    fontInfo.FileNameInRegistry = Path.GetFileName(filesSeletedPath[i]);
+                    fontReading.ReadingFontInfo(filesSeletedPath[i], ref fontInfo);
+                    fontInfo.Loaded = true;
+                    fontInfo.Disable = true;
+                    fontInfo.Owner = FontOwner.User;
+                    fileManager.CopyFileTo(fontInfo.Location, Path.Combine(fileManager.GetFontsFolderProject(), "Disable"));
+                    fontInfo.Location = Path.Combine(Path.Combine(fileManager.GetFontsFolderProject(), "Disable"), fontInfo.FileNameInRegistry);
+                    listFontAdd.Add(fontInfo);
+                }
+            }
+
+
+            SharedData.SharedData.FontInfos.AddRange(listFontAdd);
+            lbFonts.DataSource = null;
+
+            lbFonts.DataSource = SharedData.SharedData.FontInfos;
+
+            lbFonts.DataSourceChanged -= LbFonts_DataSourceChanged;
+            lbFonts.DataSourceChanged += LbFonts_DataSourceChanged;
+
+            SharedData.SharedData.DataChanged = true;
+
+            //lbFonts.Invalidate();
+
             // Cai cat fonts tu cac file da chon
+        }
+
+        private void LbFonts_DataSourceChanged(object sender, EventArgs e)
+        {
+            Logger.d("Data Changed");
         }
 
         private void BtnDisOrEnableFont_Click(object sender, EventArgs e)
         {
-
+            HandleEnDisableFont();
         }
         #endregion
 
         #region khung tìm kiếm
         private void SearchTypeClicked_listenter(object sender, SearchTypeEventArgs e)
         {
-
+            currentSearchType = e.SearchType;
         }
 
         private void TxtSearchBox_TextChanged(object sender, EventArgs e)
         {
+            if (txtSearchBox.Text.Length == 0)
+            {
+                if (!lbFonts.DataSource.Equals(SharedData.SharedData.FontInfos))
+                {
+                    lbFonts.DataSource = SharedData.SharedData.FontInfos;
+                }
+            }
+
+
+            keyWord = txtSearchBox.Text;
+        }
+
+        private void SearchEngine_ListenerSearchFinished(object sender, SearchFinishedEventArgs e)
+        {
+            Logger.d("Search Finished");
+            Logger.d(e.SearchResult.Count);
+
+            lbFonts.BeginInvoke(new Action(() => { lbFonts.DataSource = null; lbFonts.DataSource = e.SearchResult; }));
 
         }
+
+
         #endregion
 
         #region 3 button ở cột bên trái
@@ -741,6 +995,12 @@ namespace FontManager.UI
             btnAllFonts.Font = new Font(btnAllFonts.Font.Name, btnAllFonts.Font.Size, FontStyle.Bold);
             btnFontsSystem.Font = new Font(btnFontsSystem.Font.Name, btnFontsSystem.Font.Size, FontStyle.Regular);
             btnFontsUser.Font = new Font(btnFontsUser.Font.Name, btnFontsUser.Font.Size, FontStyle.Regular);
+
+            //if (!lbFonts.DataSource.Equals(SharedData.SharedData.FontInfos))
+            //{
+            //    lbFonts.DataSource = SharedData.SharedData.FontInfos;
+            //    Logger.d("Assign Data");
+            //}
         }
 
         private void BtnFontsSystem_Click(object sender, EventArgs e)
@@ -750,6 +1010,7 @@ namespace FontManager.UI
             btnAllFonts.Font = new Font(btnAllFonts.Font.Name, btnAllFonts.Font.Size, FontStyle.Regular);
             btnFontsSystem.Font = new Font(btnFontsSystem.Font.Name, btnFontsSystem.Font.Size, FontStyle.Bold);
             btnFontsUser.Font = new Font(btnFontsUser.Font.Name, btnFontsUser.Font.Size, FontStyle.Regular);
+            lbFonts.DataSource = SharedData.SharedData.FontInfos.Where(x => x.Owner == FontOwner.System).Select(x => x).ToList();
         }
 
         private void BtnFontsUser_Click(object sender, EventArgs e)
@@ -759,6 +1020,7 @@ namespace FontManager.UI
             btnAllFonts.Font = new Font(btnAllFonts.Font.Name, btnAllFonts.Font.Size, FontStyle.Regular);
             btnFontsSystem.Font = new Font(btnFontsSystem.Font.Name, btnFontsSystem.Font.Size, FontStyle.Regular);
             btnFontsUser.Font = new Font(btnFontsUser.Font.Name, btnFontsUser.Font.Size, FontStyle.Bold);
+            lbFonts.DataSource = SharedData.SharedData.FontInfos.Where(x => x.Owner == FontOwner.User).Select(x => x).ToList();
         }
         #endregion
 
@@ -771,8 +1033,9 @@ namespace FontManager.UI
 
         private void CmFontItemEnDisableFont_Click(object sender, EventArgs e)
         {
-
+            HandleEnDisableFont();
         }
+
 
         private void CmFontItemOpenFileLocation_Click(object sender, EventArgs e)
         {
@@ -788,5 +1051,119 @@ namespace FontManager.UI
         #endregion
 
         #endregion
+   
+        #region Disable And Active Font Feature
+        private void HandleEnDisableFont()
+        {
+            if (currentFontSelected.Disable == true)
+            {
+                //install font
+                InstallError error = fontInstallation.InstallFont(currentFontSelected.Location);
+
+                if (error == InstallError.INSTALL_SUSCESS)
+                {
+                    Logger.d("Install Success");
+                    string fontSystem = Path.Combine(fileManager.GetFontsSystemFolder(), currentFontSelected.FileNameInRegistry);
+                    currentFontSelected.Location = fontSystem;
+                    currentFontSelected.Disable = false;
+                    lbFonts.Invalidate();
+                }
+
+                else if (error == InstallError.INSTALL_DUPLICATE)
+                {
+                    Logger.d("Duplicate");
+                }
+            }
+            else
+            {
+                //move font to disable  
+
+                bool flag = fontInstallation.DisableFont(currentFontSelected);
+                currentFontSelected.Location = Path.Combine(Path.Combine(fileManager.GetFontsFolderProject(), "Disable"), Path.GetFileName(currentFontSelected.Location));
+
+                if (flag)
+                {
+                    lbFonts.Invalidate();
+                }
+
+                currentFontSelected.Disable = true;
+
+            }
+
+            SharedData.SharedData.DataChanged = true;
+        }
+
+        #endregion
+
+        #region Search Feature
+        private void txtSearchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Back)
+                return;
+
+            searchEngine.ListenerSearchFinished -= SearchEngine_ListenerSearchFinished;
+            searchEngine.ListenerSearchFinished += SearchEngine_ListenerSearchFinished;
+            if (keyWord != null)
+                searchEngine.FindFont(SharedData.SharedData.FontInfos, keyWord, 3, currentSearchType);
+            e.Handled = true;
+        }
+
+        #endregion
+
+        #region Load Data in Background
+        private void LoadDataBackground()
+        {
+            int countFont = SharedData.SharedData.FontInfos.Count;
+
+            int midule = countFont / 2;
+
+            Thread thread1 = new Thread((x) => LoadFontInfoBackground(x));
+            Thread thread2 = new Thread((x) => LoadFontInfoBackground(x));
+
+            thread1.Start(new DataLoadArgs()
+            {
+                Start = 0,
+                End = midule,
+            });
+
+            thread2.Start(new DataLoadArgs()
+            {
+                Start = midule + 1,
+                End = countFont,
+            });
+        }
+
+        int n_thread = 0;
+        public void LoadFontInfoBackground(object obj)
+        {
+            DataLoadArgs data = obj as DataLoadArgs;
+
+            for (int i = data.Start; i < data.End; i++)
+            {
+                FontInfo info = SharedData.SharedData.FontInfos[i];
+                string filePath = Path.Combine(fileManager.GetFontsSystemFolder(), info.FileNameInRegistry);
+                fontReading.ReadingFontInfo(filePath, ref info);
+            }
+            Logger.d("Loaded:" + data.End);
+            n_thread++;
+            if (n_thread == NUMBER_THREAD_LOAD_BACKGROUND)
+            {
+                if (loadDataBackLoadListener != null)
+                {
+                    Logger.d("Fire LoadBackground Finished");
+                    loadDataBackLoadListener.Invoke(this, new LoadBackgroundSuccessArgs());
+                }
+            }
+
+        }
+
+        public class DataLoadArgs
+        {
+            public int Start { get; set; }
+            public int End { get; set; }
+        }
+
+        #endregion
+
     }
 }

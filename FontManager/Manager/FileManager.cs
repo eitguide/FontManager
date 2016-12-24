@@ -1,10 +1,13 @@
 ﻿using FontManager.FontService;
+using FontManager.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestCSharpNghia;
 
 namespace FontManager
 {
@@ -241,5 +244,86 @@ namespace FontManager
         {
             return Path.Combine(Directory.GetParent(Directory.GetParent(GetCurrentFolderWorking()).FullName).FullName, "Fonts");
         } 
+
+        public string GetCachedFolderProject()
+        {
+            return Path.Combine(Directory.GetParent(Directory.GetParent(GetCurrentFolderWorking()).FullName).FullName, "Cached");
+        }
+
+        public string GetDisableFontProject()
+        {
+            return Path.Combine(GetFontsFolderProject(), "Disable");
+        }
+
+        public void SaveFontData(List<FontInfo> fontInfo)
+        {
+            if (fontInfo == null)
+                return;
+            string fileName = Path.Combine(GetCachedFolderProject(), "FontData.txt");
+            //using(FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Write))
+            //{
+            //    using(StreamWriter writer = new StreamWriter(fileStream))
+            //    {
+            //        string json = JsonConvert.SerializeObject(fontInfo);
+            //        writer.Write(@json);
+            //    }
+            //}
+
+            string json = JsonConvert.SerializeObject(fontInfo);
+            File.WriteAllBytes(fileName, System.Text.Encoding.ASCII.GetBytes(json));
+        }
+        
+        public void SaveCacheFile(List<FontInfo> listAdded)
+        {
+
+            using (FileStream fileStream = new FileStream(Path.Combine(GetCachedFolderProject(), "Cached.txt"),
+                FileMode.Truncate, FileAccess.Write))
+            {
+                using (StreamWriter writer = new StreamWriter(fileStream))
+                {
+                    writer.Write(JsonConvert.SerializeObject(listAdded));
+                }
+
+            }
+        }
+
+        public List<FontInfo> GetFontDataCached()
+        {
+            string fileName = Path.Combine(GetCachedFolderProject(), "FontData.txt");
+            string json = string.Empty;
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    json = reader.ReadToEnd();
+                }
+            }
+
+            if (json != string.Empty)
+                return JsonConvert.DeserializeObject<List<FontInfo>>(json);
+
+            return null;
+        }
+
+        public static void LoadSubsetDataFromFile()
+        {
+            string fileName = Path.Combine(FileManager.GetInstance().GetCachedFolderProject(), "Subset.txt");
+            string content = string.Empty;
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    content = reader.ReadToEnd();
+                }
+            }
+
+            //int convert = int.Parse("0080", System.Globalization.NumberStyles.HexNumber);
+
+            if (string.Empty != content)
+            {
+                SharedData.SharedData.Subsets = JsonConvert.DeserializeObject<List<Subset>>(content);
+                SharedData.SharedData.IsSubsetsLoaded = true;
+            }
+        }
     }
 }

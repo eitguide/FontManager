@@ -71,6 +71,15 @@ namespace FontManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to true.
+        /// </summary>
+        internal static string FirstLaunch {
+            get {
+                return ResourceManager.GetString("FirstLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap font_2 {
