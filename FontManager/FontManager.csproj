@@ -58,6 +58,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,18 +75,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callback\LoadBackgroundSuccessArgs.cs" />
     <Compile Include="Callback\SearchFailedEventArgs.cs" />
     <Compile Include="Callback\SearchFinishedEventArgs.cs" />
     <Compile Include="Callback\SearchTypeEventArgs.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="FontService\FontInstallation.cs" />
+    <Compile Include="FontService\FontOwner.cs" />
     <Compile Include="FontService\FontReading.cs" />
     <Compile Include="FontService\InstallError.cs" />
     <Compile Include="FontService\LanguageMapping.cs" />
     <Compile Include="FontService\NameTableId.cs" />
     <Compile Include="FontService\SearchEngine.cs" />
     <Compile Include="FontService\SearchType.cs" />
+    <Compile Include="Board\Board.cs" />
     <Compile Include="Manager\FileManager.cs" />
     <Compile Include="FontService\FontFormat.cs" />
     <Compile Include="FontService\FontService.cs" />
@@ -96,9 +103,13 @@
     <Compile Include="Manager\FontManager.cs" />
     <Compile Include="Model\CacheFonts.cs" />
     <Compile Include="Model\FontInfo.cs" />
+    <Compile Include="Model\Subset.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedData\SharedData.cs" />
+    <Compile Include="UI\Control\DoubleBufferPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\Control\FontInfoUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -146,51 +157,7 @@
       <DependentUpon>TestActiveFont.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
-    <None Include="Fonts\Actived\Alegreya-Regular.otf" />
-    <None Include="Fonts\Actived\AlexBrush-Regular.ttf" />
-    <None Include="Fonts\Actived\Cousine-Regular-Latin.ttf" />
-    <None Include="Fonts\Actived\Molle-Regular.ttf" />
-    <None Include="Fonts\Actived\RobotoSlab-Bold.ttf" />
-    <None Include="Fonts\Actived\RobotoSlab-Light.ttf" />
-    <None Include="Fonts\Actived\RobotoSlab-Regular.ttf" />
-    <None Include="Fonts\Actived\RobotoSlab-Thin.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-Bold.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-BoldItalic.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-Italic.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-Light.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-LightItalic.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-Medium.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-MediumItalic.ttf" />
-    <None Include="Fonts\Actived\Ubuntu-Regular.ttf" />
-    <None Include="Fonts\Disable\Alegreya-Regular.otf" />
-    <None Include="Fonts\Disable\AlexBrush-Regular.ttf" />
-    <None Include="Fonts\Disable\Athiti-Bold.ttf" />
-    <None Include="Fonts\Disable\Athiti-ExtraLight.ttf" />
-    <None Include="Fonts\Disable\Athiti-Light.ttf" />
-    <None Include="Fonts\Disable\Athiti-Medium.ttf" />
-    <None Include="Fonts\Disable\Athiti-Regular.ttf" />
-    <None Include="Fonts\Disable\Athiti-SemiBold.ttf" />
-    <None Include="Fonts\Disable\Chonburi-Regular.ttf" />
-    <None Include="Fonts\Disable\Cousine-Regular-Latin.ttf" />
-    <None Include="Fonts\Disable\Molle-Regular.ttf" />
-    <None Include="Fonts\Disable\RobotoSlab-Bold.ttf" />
-    <None Include="Fonts\Disable\RobotoSlab-Light.ttf" />
-    <None Include="Fonts\Disable\RobotoSlab-Regular.ttf" />
-    <None Include="Fonts\Disable\RobotoSlab-Thin.ttf" />
-    <None Include="Fonts\Disable\SpaceMono-Bold.ttf" />
-    <None Include="Fonts\Disable\SpaceMono-BoldItalic.ttf" />
-    <None Include="Fonts\Disable\SpaceMono-Italic.ttf" />
-    <None Include="Fonts\Disable\SpaceMono-Regular.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-Bold.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-BoldItalic.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-Italic.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-Light.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-LightItalic.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-Medium.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-MediumItalic.ttf" />
-    <None Include="Fonts\Disable\Ubuntu-Regular.ttf" />
-    <None Include="Fonts\Disable\VNF-ACaslonPro-Regular.ttf" />
-    <None Include="Fonts\Disable\VNF-Strangelove-text.ttf" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -205,15 +172,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Fonts\Actived\Alegreya - SIL Open Font License.txt" />
-    <Content Include="Fonts\Actived\AlexBrush - SIL Open Font License.txt" />
-    <Content Include="Fonts\Actived\Cousine - SIL Open Font License 1.1.txt" />
     <None Include="Resources\icon_application.ico" />
-    <Content Include="Fonts\Actived\UFL.txt" />
-    <Content Include="Fonts\Disable\Alegreya - SIL Open Font License.txt" />
-    <Content Include="Fonts\Disable\AlexBrush - SIL Open Font License.txt" />
-    <Content Include="Fonts\Disable\Cousine - SIL Open Font License 1.1.txt" />
-    <Content Include="Fonts\Disable\UFL.txt" />
     <None Include="Resources\1481836849_General_-_Office_26.png" />
     <None Include="Resources\1481837152_114_Grid2.png" />
     <None Include="Resources\1481837244_114_Grid2.png" />
@@ -248,9 +207,15 @@
     <None Include="Resources\1481917059_header-account-image-line.png" />
     <None Include="Resources\1481917161_user_male3.png" />
     <None Include="Resources\1481917416_Noun_Project_100Icon_10px_grid-07.png" />
+    <Content Include="Cached\Cached.txt" />
+    <Content Include="Cached\FontData.txt" />
+    <Content Include="Cached\Subset.txt" />
     <Content Include="x86\freetype6.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Fonts\Actived\" />
+    <Folder Include="Fonts\Disable\" />
+  </ItemGroup>
   <Import Project="..\LibFont\LibFont.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
