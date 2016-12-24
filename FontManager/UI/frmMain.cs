@@ -261,8 +261,11 @@ namespace FontManager.UI
             lbFonts.SelectedIndexChanged += lbFonts_SelectedIndexChanged;
             pnlDrawCharacter.Paint += PnlDrawCharacter_Paint;
             pnlDrawCharacter.SizeChanged += PnlDrawCharacter_SizeChanged;
-            
+
             //Load Font Data
+            FontManager.Properties.Settings.Default.FirstLanch = true;
+            FontManager.Properties.Settings.Default.Save();
+
             if (FontManager.Properties.Settings.Default.FirstLanch == true)
             {
                 Logger.d("Load data background");
@@ -347,7 +350,6 @@ namespace FontManager.UI
         {
             int index = cbSubsetFont.SelectedIndex;
             Logger.d("Index Selected: " + index);
-
 
             if (index >= 0)
             {
@@ -998,11 +1000,9 @@ namespace FontManager.UI
             btnFontsSystem.Font = new Font(btnFontsSystem.Font.Name, btnFontsSystem.Font.Size, FontStyle.Regular);
             btnFontsUser.Font = new Font(btnFontsUser.Font.Name, btnFontsUser.Font.Size, FontStyle.Regular);
 
-            //if (!lbFonts.DataSource.Equals(SharedData.SharedData.FontInfos))
-            //{
-            //    lbFonts.DataSource = SharedData.SharedData.FontInfos;
-            //    Logger.d("Assign Data");
-            //}
+           
+            lbFonts.DataSource = SharedData.SharedData.FontInfos;
+           
         }
 
         private void BtnFontsSystem_Click(object sender, EventArgs e)
