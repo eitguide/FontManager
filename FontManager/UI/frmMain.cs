@@ -154,14 +154,7 @@ namespace FontManager.UI
             ((ToolStripMenuItem)cmSearchType.Items[0]).Checked = true;
             selectedMenuItem = MenuItem.AllFont;
 
-            // Khoi tao cac ky tu cho Grid Sample
-            //char c = '!'; int count = 1;
-            //do
-            //{
-            //    rtxtViewGridSample.Text += "\t" + c++;
-            //    count++;
-            //} while (count != 271);
-
+        
             rtxtViewAz09Sample.SelectAll();
             rtxtViewAz09Sample.SelectionAlignment = HorizontalAlignment.Center;
             rtxtViewAz09Sample.Select(1, 0);
@@ -413,10 +406,15 @@ namespace FontManager.UI
                         currentRow++;
                     }
 
-                    Bitmap bitmap = mFontService.RenderCharacterCode((uint)CharacterIndex[i]);
-                    CharactersLabel[currentRow, currentColumn].Image = bitmap;
-                    pnlDrawCharacter.Controls.Add(CharactersLabel[currentRow, currentColumn]);
-                    currentColumn++;
+                    try {
+                        Bitmap bitmap = mFontService.RenderCharacterCode((uint)CharacterIndex[i]);
+                        CharactersLabel[currentRow, currentColumn].Image = bitmap;
+                        pnlDrawCharacter.Controls.Add(CharactersLabel[currentRow, currentColumn]);
+                        currentColumn++;
+                    }catch(Exception ex)
+                    {
+                        Logger.d(ex.Message);
+                    }
                     
                 }
 
