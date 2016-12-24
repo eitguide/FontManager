@@ -94,12 +94,6 @@
     <Compile Include="FontService\FontFormat.cs" />
     <Compile Include="FontService\FontService.cs" />
     <Compile Include="FontService\FontType.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Manager\FontManager.cs" />
     <Compile Include="Model\CacheFonts.cs" />
     <Compile Include="Model\FontInfo.cs" />
@@ -128,9 +122,6 @@
     <Compile Include="Utils\ColorHelper.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\TextUtils.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
