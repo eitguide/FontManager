@@ -268,6 +268,7 @@ namespace FontManager.UI
                 Logger.d("Load data background");
                 loadDataBackLoadListener += FrmMain_loadDataBackLoadListener;
                 SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
+                lbFonts.DataSource = SharedData.SharedData.FontInfos;
                 LoadDataBackground();
                 FontManager.Properties.Settings.Default.FirstLanch = false;
                 FontManager.Properties.Settings.Default.Save();
