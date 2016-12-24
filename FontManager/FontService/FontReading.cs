@@ -45,23 +45,27 @@ namespace FontManager.FontService
                 //Find subset of a font
                 if (SharedData.SharedData.IsSubsetsLoaded)
                 {
-                    for (int i = 0; i < SharedData.SharedData.Subsets.Count; i++)
+                    if (fontInfo.Subsets.Count == 0)
                     {
-                        Subset item = SharedData.SharedData.Subsets[i];
-                        int start = int.Parse(item.start, System.Globalization.NumberStyles.HexNumber);
-                        int end = int.Parse(item.end, System.Globalization.NumberStyles.HexNumber);
-                        
-                       for(int index = start; index <= end; index++)
+                        for (int i = 0; i < SharedData.SharedData.Subsets.Count; i++)
                         {
-                            if(face.GetCharIndex((uint)index) != 0)
+                            Subset item = SharedData.SharedData.Subsets[i];
+                            int start = int.Parse(item.start, System.Globalization.NumberStyles.HexNumber);
+                            int end = int.Parse(item.end, System.Globalization.NumberStyles.HexNumber);
+
+                            for (int index = start; index <= end; index++)
                             {
-                                fontInfo.Subsets.Add(item);
-                                break;
+                                if (face.GetCharIndex((uint)index) != 0)
+                                {
+                                    fontInfo.Subsets.Add(item);
+                                    break;
+                                }
                             }
                         }
                     }
                 }
 
+              
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0; i < face.CharmapsCount; i++)
                 {
