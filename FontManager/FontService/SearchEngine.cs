@@ -133,7 +133,7 @@ namespace FontManager.FontService
 
                     case SearchType.Copyright:
                         string copyRight = data.Source[i].Copyright;
-                        if (copyRight != data.Source[i].Copyright && copyRight.Contains(data.Keyword))
+                        if (copyRight != null && copyRight.Contains(data.Keyword))
                         {
                             this.SearchResult.Add(data.Source[i]);
                         }
