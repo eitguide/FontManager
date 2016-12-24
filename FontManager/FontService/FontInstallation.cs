@@ -201,7 +201,13 @@ namespace FontManager.FontService
                 return false;
 
             fileManager.CopyFileTo(info.Location, fileManager.GetDisableFontProject());
-            this.registryKey.DeleteValue(key);
+            try {
+                this.registryKey.DeleteValue(key);
+            }
+            catch (Exception ex)
+            {
+                Logger.d(ex.Message);
+            }
 
             return true;
            
