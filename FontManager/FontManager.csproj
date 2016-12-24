@@ -125,12 +125,6 @@
     <Compile Include="UI\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\TestActiveFont.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\TestActiveFont.Designer.cs">
-      <DependentUpon>TestActiveFont.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils\ColorHelper.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\TextUtils.cs" />
@@ -152,9 +146,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\TestActiveFont.resx">
-      <DependentUpon>TestActiveFont.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />
@@ -207,7 +198,6 @@
     <None Include="Resources\1481917059_header-account-image-line.png" />
     <None Include="Resources\1481917161_user_male3.png" />
     <None Include="Resources\1481917416_Noun_Project_100Icon_10px_grid-07.png" />
-    <Content Include="Cached\Cached.txt" />
     <Content Include="Cached\FontData.txt" />
     <Content Include="Cached\Subset.txt" />
     <Content Include="x86\freetype6.dll" />
