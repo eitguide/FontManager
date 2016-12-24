@@ -236,8 +236,6 @@ namespace FontManager.UI
             mBoard = new Board.Board();
             mFontService = new FontService.FontService();
 
-    
-            
 
             lbFonts.SelectedIndex = -1;
 
@@ -248,13 +246,13 @@ namespace FontManager.UI
             if (!SharedData.SharedData.IsSubsetsLoaded)
                 FileManager.LoadSubsetDataFromFile();
 
-            //SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
-            //lbFonts.DataSource = SharedData.SharedData.FontInfos;
+            SharedData.SharedData.FontInfos = fontInstallation.GetListFontInfoInstalled();
+            lbFonts.DataSource = SharedData.SharedData.FontInfos;
 
             lbFonts.SelectedIndexChanged += lbFonts_SelectedIndexChanged;
             pnlDrawCharacter.Paint += PnlDrawCharacter_Paint;
             pnlDrawCharacter.SizeChanged += PnlDrawCharacter_SizeChanged;
-            
+
             //Load Font Data
             if (FontManager.Properties.Settings.Default.FirstLanch == true)
             {
@@ -415,7 +413,6 @@ namespace FontManager.UI
                     {
                         Logger.d(ex.Message);
                     }
-                    
                 }
 
                 currentRow = 0;
