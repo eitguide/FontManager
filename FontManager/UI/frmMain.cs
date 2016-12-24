@@ -128,7 +128,7 @@ namespace FontManager.UI
             lbFonts.MouseDown += LbFonts_MouseDown;
             trbrEditSizeFontAz09View.Scroll += TrbrEditSizeFontAz09View_Scroll;
             trbrEditSizeFontSentencesView.Scroll += TrbrEditSizeFontSentencesView_Scroll;
-            trbrEditSizeFontGridSampleView.Scroll += TrbrEditSizeFontGridSampleView_Scroll;
+           
             #endregion
 
             // Khoi tao mot vai thanh phan
@@ -614,31 +614,7 @@ namespace FontManager.UI
             }
         }
 
-        private void TrbrEditSizeFontGridSampleView_Scroll(object sender, EventArgs e)
-        {
-            switch (trbrEditSizeFontGridSampleView.Value)
-            {
-                //case 1:
-                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 14);
-                //    break;
-                //case 2:
-                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 15);
-                //    break;
-                //case 3:
-                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 17);
-                //    break;
-                //case 4:
-                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 20);
-                //    break;
-                //case 5:
-                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 24);
-                //    break;
-                //case 6:
-                //    rtxtViewGridSample.Font = new Font(rtxtViewGridSample.Font.FontFamily, 29);
-                //    break;
-            }
-        }
-
+     
         private void LbFonts_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)

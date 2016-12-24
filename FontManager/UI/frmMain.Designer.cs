@@ -59,9 +59,8 @@ namespace FontManager.UI
             this.lbFonts = new FontManager.UI.Control.FontListBox();
             this.pnlShowContent = new System.Windows.Forms.Panel();
             this.pnlViewGridSample = new System.Windows.Forms.Panel();
-            this.trbrEditSizeFontGridSampleView = new System.Windows.Forms.TrackBar();
             this.pnlViewGridSampleChild = new System.Windows.Forms.Panel();
-            this.pnlDrawCharacter = new DoubleBufferPanel();
+            this.pnlDrawCharacter = new FontManager.UI.Control.DoubleBufferPanel();
             this.cbSubsetFont = new System.Windows.Forms.ComboBox();
             this.pnlViewFontInfo = new System.Windows.Forms.Panel();
             this.pnlFontInfoBottomView = new System.Windows.Forms.Panel();
@@ -91,7 +90,6 @@ namespace FontManager.UI
             this.pnlListFont.SuspendLayout();
             this.pnlShowContent.SuspendLayout();
             this.pnlViewGridSample.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontGridSampleView)).BeginInit();
             this.pnlViewGridSampleChild.SuspendLayout();
             this.pnlViewFontInfo.SuspendLayout();
             this.pnlFontInforTopView.SuspendLayout();
@@ -459,7 +457,6 @@ namespace FontManager.UI
             // 
             // pnlViewGridSample
             // 
-            this.pnlViewGridSample.Controls.Add(this.trbrEditSizeFontGridSampleView);
             this.pnlViewGridSample.Controls.Add(this.pnlViewGridSampleChild);
             this.pnlViewGridSample.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlViewGridSample.Location = new System.Drawing.Point(0, 0);
@@ -467,19 +464,6 @@ namespace FontManager.UI
             this.pnlViewGridSample.Name = "pnlViewGridSample";
             this.pnlViewGridSample.Size = new System.Drawing.Size(801, 803);
             this.pnlViewGridSample.TabIndex = 0;
-            // 
-            // trbrEditSizeFontGridSampleView
-            // 
-            this.trbrEditSizeFontGridSampleView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trbrEditSizeFontGridSampleView.Location = new System.Drawing.Point(738, 0);
-            this.trbrEditSizeFontGridSampleView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.trbrEditSizeFontGridSampleView.Maximum = 6;
-            this.trbrEditSizeFontGridSampleView.Minimum = 1;
-            this.trbrEditSizeFontGridSampleView.Name = "trbrEditSizeFontGridSampleView";
-            this.trbrEditSizeFontGridSampleView.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trbrEditSizeFontGridSampleView.Size = new System.Drawing.Size(69, 188);
-            this.trbrEditSizeFontGridSampleView.TabIndex = 5;
-            this.trbrEditSizeFontGridSampleView.Value = 1;
             // 
             // pnlViewGridSampleChild
             // 
@@ -705,8 +689,6 @@ namespace FontManager.UI
             this.pnlListFont.ResumeLayout(false);
             this.pnlShowContent.ResumeLayout(false);
             this.pnlViewGridSample.ResumeLayout(false);
-            this.pnlViewGridSample.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbrEditSizeFontGridSampleView)).EndInit();
             this.pnlViewGridSampleChild.ResumeLayout(false);
             this.pnlViewFontInfo.ResumeLayout(false);
             this.pnlFontInforTopView.ResumeLayout(false);
@@ -760,7 +742,6 @@ namespace FontManager.UI
         private System.Windows.Forms.TrackBar trbrEditSizeFontSentencesView;
         private System.Windows.Forms.Panel pnlViewSentencesSampleChild;
         private System.Windows.Forms.Panel pnlViewAz09SampleChild;
-        private System.Windows.Forms.TrackBar trbrEditSizeFontGridSampleView;
         private System.Windows.Forms.Panel pnlViewGridSampleChild;
         private System.Windows.Forms.Panel pnlBorder;
         private System.Windows.Forms.ToolTip mainToolTip;
@@ -771,6 +752,6 @@ namespace FontManager.UI
         private System.Windows.Forms.Label lblFontInfoFontStyle;
         private System.Windows.Forms.Label lblFontInfoTitleFont;
         private System.Windows.Forms.ComboBox cbSubsetFont;
-        private System.Windows.Forms.Panel pnlDrawCharacter;
+        private DoubleBufferPanel pnlDrawCharacter;
     }
 }
