@@ -1042,7 +1042,8 @@ namespace FontManager.UI
 
         private void CmFontItemOpenFileLocation_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", currentFontSelected.Location);
+            
+            Process.Start("explorer.exe", Directory.GetParent(currentFontSelected.Location).FullName);
         }
 
         #endregion
