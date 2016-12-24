@@ -254,6 +254,8 @@ namespace FontManager.UI
             pnlDrawCharacter.SizeChanged += PnlDrawCharacter_SizeChanged;
 
             //Load Font Data
+            FontManager.Properties.Settings.Default.FirstLanch = true;
+            FontManager.Properties.Settings.Default.Save();
             if (FontManager.Properties.Settings.Default.FirstLanch == true)
             {
                 Logger.d("Load data background");
@@ -676,6 +678,7 @@ namespace FontManager.UI
         {
             if (FontManager.Properties.Settings.Default.FirstLanch || SharedData.SharedData.DataChanged)
             {
+                Logger.d("Save Cached File");
                 fileManager.SaveFontData(SharedData.SharedData.FontInfos);
             }
             this.Close();
